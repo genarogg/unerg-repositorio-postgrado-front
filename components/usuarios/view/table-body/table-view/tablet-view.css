@@ -1,0 +1,257 @@
+.table-management-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  /* Agregar margen inferior para la barra de acciones masivas */
+  margin-bottom: 100px;
+}
+
+.table-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* border-radius: 8px; */
+  border: 1px solid #e5e7eb;
+  min-height: 400px;
+  position: relative;
+  overflow-y: visible !important;
+  overflow-x: auto !important;
+  /* Agregar margen inferior para evitar que la barra tape el contenido */
+  margin-bottom: 20px;
+}
+
+/* Add these styles to control column widths */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  position: relative;
+}
+
+/* Define specific column widths */
+.data-table th.select-column,
+.data-table td.select-column {
+  width: 40px;
+}
+
+.data-table th.id-column,
+.data-table td.id-column {
+  width: 60px;
+}
+
+.data-table th.nombre-column,
+.data-table td.nombre-column {
+  width: 18%;
+}
+
+.data-table th.correo-column,
+.data-table td.correo-column {
+  width: 22%;
+}
+
+.data-table th.telefono-column,
+.data-table td.telefono-column {
+  width: 12%;
+}
+
+.data-table th.cedula-column,
+.data-table td.cedula-column {
+  width: 10%;
+}
+
+.data-table th.rol-column,
+.data-table td.rol-column {
+  width: 12%;
+}
+
+/* Ensure the actions column has enough width */
+.data-table th.acciones-column,
+.data-table td.acciones-column {
+  width: 240px; /* Increased fixed width to ensure enough space */
+  min-width: 240px;
+  /* Important: Override overflow for the actions column */
+  overflow: visible !important;
+  position: relative;
+}
+
+/* Ensure content doesn't overflow cells */
+.data-table td {
+  padding: 18px 12px;
+  font-size: 14px;
+  color: #1f2937;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.data-table th {
+  background-color: #f1f5f9;
+  padding: 18px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  color: #64748b;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+/* Estilos para cuadrícula */
+.data-table.with-grid {
+  border: 1px solid #d1d5db;
+}
+
+.data-table.with-grid th {
+  border-right: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
+  background-color: #f1f5f9;
+}
+
+.data-table.with-grid th:last-child {
+  border-right: none;
+}
+
+.data-table.with-grid td {
+  border-right: 1px solid #d1d5db;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.data-table.with-grid td:last-child {
+  border-right: none;
+}
+
+.data-table.with-grid tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.select-column {
+  width: 40px;
+  text-align: center;
+}
+
+.select-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-btn:hover {
+  border-color: #9ca3af;
+  background-color: #f9fafb;
+}
+
+.select-btn.selected {
+  background-color: #1f2937;
+  border-color: #1f2937;
+  color: #ffffff;
+}
+
+.select-btn.master-select {
+  border: 2px solid #d1d5db;
+}
+
+.select-btn.master-select:hover {
+  border-color: #9ca3af;
+  background-color: #f9fafb;
+}
+
+.select-btn.master-select.none {
+  background-color: #ffffff;
+  border-color: #d1d5db;
+}
+
+.select-btn.master-select.some {
+  background-color: #f59e0b;
+  border-color: #f59e0b;
+  color: #ffffff;
+}
+
+.select-btn.master-select.all {
+  background-color: #1f2937;
+  border-color: #1f2937;
+  color: #ffffff;
+}
+
+.select-btn.master-select.some:hover,
+.select-btn.master-select.all:hover {
+  opacity: 0.9;
+}
+
+.row-even {
+  background-color: #ffffff;
+}
+
+.row-odd {
+  background-color: #f1f5f9;
+}
+
+.name-cell {
+  color: #1f2937;
+}
+
+.email-cell {
+  color: #6b7280;
+}
+
+.no-results {
+  text-align: center;
+  padding: 48px 24px;
+  color: #6b7280;
+}
+
+.no-results p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.data-table tbody {
+  position: relative;
+  min-height: 320px;
+  display: table-row-group;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .table-management-container {
+    padding: 16px;
+    /* Aumentar margen inferior en móviles */
+    margin-bottom: 140px;
+  }
+
+  .data-table {
+    font-size: 12px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 8px 6px;
+  }
+}
+
+@media (max-width: 640px) {
+  .data-table th:nth-child(4),
+  .data-table td:nth-child(4),
+  .data-table th:nth-child(5),
+  .data-table td:nth-child(5) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-management-container {
+    /* Aumentar aún más el margen en pantallas muy pequeñas */
+    margin-bottom: 180px;
+  }
+}
