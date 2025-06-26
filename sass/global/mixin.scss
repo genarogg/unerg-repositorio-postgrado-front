@@ -1,0 +1,133 @@
+// centrar elementos
+@mixin center-grid-xy {
+  display: grid;
+  place-content: center;
+}
+
+@mixin center-flex-xy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin center-x {
+  display: flex;
+  justify-content: center;
+}
+
+@mixin center-y {
+  display: flex;
+  align-items: center;
+}
+
+// width absoluto
+@mixin width($size) {
+  width: $size;
+  min-width: $size;
+  max-width: $size;
+}
+
+// height absoluto
+@mixin height($size) {
+  height: $size;
+  min-height: $size;
+  max-height: $size;
+}
+
+@mixin square($sizew, $sizeh: $sizew) {
+  height: $sizeh;
+  max-height: $sizeh;
+  min-height: $sizeh;
+  width: $sizew;
+  max-width: $sizew;
+  min-width: $sizew;
+}
+
+@mixin distribucion-responsiva($size: 360px, $cantidad-de-elementos: 1fr) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,
+      minmax($size, $cantidad-de-elementos));
+
+  @media screen and (max-width: 360px) {
+    grid-template-columns: repeat(auto-fit,
+        minmax(95vw, $cantidad-de-elementos));
+  }
+}
+
+@mixin between($min-width, $max-width) {
+  @media (min-width: $min-width) and (max-width: $max-width) {
+    @content;
+  }
+}
+
+@mixin max-width($size) {
+  @media screen and (max-width: $size) {
+    @content;
+  }
+}
+
+@mixin min-width($size) {
+  @media screen and (min-width: $size) {
+    @content;
+  }
+}
+
+@mixin scroll($color: #fff, $size: 6px, $bgColor: "#000") {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $color;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $bgColor;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: $bgColor;
+  }
+}
+
+@mixin text-gradient($start-color: blue, $end-color: red, $fallback-color: white) {
+  background: -webkit-linear-gradient($start-color, $end-color);
+  background: -moz-linear-gradient($start-color, $end-color);
+  background: -o-linear-gradient($start-color, $end-color);
+  background: linear-gradient($start-color, $end-color);
+
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  color: $fallback-color;
+
+}
+
+@mixin border-gradient(
+  $border-top: #09f,
+  $border-bottom: #2e886d,
+  $border-width: 2px,
+  $bg-color: rgb(26, 26, 26),
+  $bg-top: $bg-color,
+  $bg-bottom: $bg-color,
+  $animation-duration: 5s
+) {
+  border: $border-width solid transparent;
+  background: linear-gradient($bg-top, $bg-bottom) padding-box,
+              linear-gradient($border-top, $border-bottom) border-box;
+  background-size: 200% 200%;
+  animation: border-gradient-animation $animation-duration infinite linear;
+}
+
+@keyframes border-gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

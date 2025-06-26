@@ -1,0 +1,152 @@
+@import "../../../sass/global/variables";
+@import "../../../sass/global/mixin";
+
+$color-secondary: #e5eaf1;
+$color-text: #111827;
+$border-container: 1px solid #e2e8f0;
+
+form {
+    display: grid;
+    gap: 40px;
+}
+
+.container-input {
+    @include center-flex-xy();
+
+    border: $border-container;
+    border-radius: $border-radius;
+    min-width: 333px;
+    height: 46px;
+    position: relative;
+    width: 100%;
+
+    // &,
+    // * {
+    //     transition: 500ms ease all;
+    //     border: 1px solid red;
+    // }
+
+    &:hover {
+        border: 1px solid $color-secondary;
+    }
+
+    // Aplica focus-ring cuando el input interno tiene focus
+    &:focus-within {
+        @include focus-ring;
+    }
+
+    &.focus {
+        border: 1px solid $color-secondary;
+        @include focus-ring; // También aplica el focus-ring cuando tiene la clase focus
+
+        span.holder {
+            font-size: 14px;
+            font-weight: 600;
+            top: -20px !important;
+        }
+    }
+
+    &.no-icon {
+        span.holder {
+
+            left: 0px;
+
+            &.has-content {
+                font-size: 14px;
+                left: -8px;
+            }
+        }
+    }
+
+    &.icon-placehorder {
+
+        span.holder {
+            left: 0px;
+            padding: 0;
+            display: flex;
+        }
+
+        .label-ico {
+            width: 34px;
+        }
+    }
+
+    .label-ico,
+    .view-pass {
+        @include center-flex-xy();
+        $size: 46px;
+
+        height: inherit;
+        width: $size;
+
+        .icon {
+            @include center-flex-xy();
+            font-size: 20px;
+            color: $color-text;
+            cursor: pointer;
+        }
+    }
+
+    input {
+        background-color: transparent;
+        border: none;
+        font-size: 16px;
+        font-weight: 500;
+        height: 100%;
+        outline: none; // Importante: quita el outline del input para que solo el contenedor lo tenga
+        padding: 0 10px;
+        position: relative;
+        width: 100%;
+        color: $color-text;
+
+        // Asegúrate de que el input no tenga su propio focus ring
+        &:focus {
+            outline: none;
+        }
+    }
+
+    span.holder {
+        background-color: #ffffff;
+        backdrop-filter: $blur;
+        color: $color-text;
+        font-size: 16px;
+        left: 40px;
+        padding: 0 10px;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        top: 23px;
+        transform: translateY(-50%);
+        transition: 0.3s;
+
+        &.has-content {
+            font-size: 14px;
+            font-weight: 500;
+            top: -20px !important;
+        }
+    }
+
+    input[type="date"] {
+        cursor: pointer;
+
+        &::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        &::-ms-expand {
+            display: none;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+    }
+}

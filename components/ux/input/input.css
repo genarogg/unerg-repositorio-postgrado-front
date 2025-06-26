@@ -1,0 +1,130 @@
+@keyframes border-gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+form {
+  display: grid;
+  gap: 40px;
+}
+
+.container-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  min-width: 333px;
+  height: 46px;
+  position: relative;
+  width: 100%;
+}
+.container-input:hover {
+  border: 1px solid #e5eaf1;
+}
+.container-input:focus-within {
+  outline-offset: 2px;
+  outline: 2px solid #020817;
+}
+.container-input.focus {
+  border: 1px solid #e5eaf1;
+  outline-offset: 2px;
+  outline: 2px solid #020817;
+}
+.container-input.focus span.holder {
+  font-size: 14px;
+  font-weight: 600;
+  top: -20px !important;
+}
+.container-input.no-icon span.holder {
+  left: 0px;
+}
+.container-input.no-icon span.holder.has-content {
+  font-size: 14px;
+  left: -8px;
+}
+.container-input.icon-placehorder span.holder {
+  left: 0px;
+  padding: 0;
+  display: flex;
+}
+.container-input.icon-placehorder .label-ico {
+  width: 34px;
+}
+.container-input .label-ico,
+.container-input .view-pass {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: inherit;
+  width: 46px;
+}
+.container-input .label-ico .icon,
+.container-input .view-pass .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: #111827;
+  cursor: pointer;
+}
+.container-input input {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  height: 100%;
+  outline: none;
+  padding: 0 10px;
+  position: relative;
+  width: 100%;
+  color: #111827;
+}
+.container-input input:focus {
+  outline: none;
+}
+.container-input span.holder {
+  background-color: #ffffff;
+  backdrop-filter: blur(10px);
+  color: #111827;
+  font-size: 16px;
+  left: 40px;
+  padding: 0 10px;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  top: 23px;
+  transform: translateY(-50%);
+  transition: 0.3s;
+}
+.container-input span.holder.has-content {
+  font-size: 14px;
+  font-weight: 500;
+  top: -20px !important;
+}
+.container-input input[type="date"] {
+  cursor: pointer;
+}
+.container-input input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+.container-input input[type="date"]::-ms-expand {
+  display: none;
+}
+.container-input input[type="date"]::before {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}

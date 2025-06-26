@@ -1,0 +1,121 @@
+@use "sass/global/variables" as var;
+@use "sass/global/mixin" as fn;
+
+
+.container-aside {
+  @include fn.width(240px);
+  transition: all 0.5s ease;
+
+  position: absolute;
+  left: 0;
+  height: calc(100vh - 70px);
+  height: calc(100dvh - 70px);
+  top: 70px;
+  left: -100%;
+  box-shadow: 20px 20px 30px 10px rgba(1, 42, 112, 0.1);
+  z-index: 1000;
+  background-color: #fff;
+
+  .sidebar {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+
+    padding-top: 25px;
+    position: relative;
+
+    .container-nav {
+      width: 100%;
+    }
+
+    nav {
+      width: 90%;
+      margin-left: 40px;
+
+      ul {
+
+        display: grid;
+
+        margin-top: 0;
+        padding-left: 0;
+      }
+
+      li {
+        list-style: none;
+        margin: 0 !important;
+
+        a {
+
+
+          label {
+            min-width: 160px;
+            display: flex;
+            height: 40px;
+            cursor: pointer;
+            align-items: center;
+          }
+        }
+      }
+
+      button {
+        display: none;
+      }
+    }
+
+
+
+
+
+  }
+
+  .salirBtn {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+
+    button {
+      width: 100%;
+      height: 50px;
+      background-color: var.$color-secondary;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var.$color-secondary;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 799px) {
+
+  .container-aside .salirBtn {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+  }
+
+}
+
+@media screen and (max-width: 799px) {
+  .container-aside.sidebar-header {
+    left: 0%;
+    top: 71px;
+    z-index: 1000;
+    position: fixed;
+    backdrop-filter: blur(10px);
+    position: fixed;
+
+    .sidebar {
+      ul li {
+        margin: 0;
+      }
+    }
+  }
+
+}

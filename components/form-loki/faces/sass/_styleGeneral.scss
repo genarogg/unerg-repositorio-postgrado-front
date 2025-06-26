@@ -1,0 +1,171 @@
+@use "/sass/global/mixin" as fn;
+@use "/sass/global/variables" as var;
+
+@supports (-moz-appearance: none) {
+    .container-form-loki {
+        backface-visibility: hidden;
+    }
+}
+
+/* Logica para voltear la tarjeta */
+
+.container-form-loki {
+    @include fn.center-x;
+    height: 630px;
+    position: relative;
+    transform: rotateY(0deg);
+    transform-style: preserve-3d;
+    transition: 1s all ease-in-out;
+    width: 360px;
+    z-index: 2;
+
+    &.right-active {
+        transform: rotateY(180deg);
+
+        &.active {
+            .right {
+                animation: colorChange 1s forwards;
+            }
+        }
+
+        .front {
+            z-index: 1;
+        }
+
+        .right {
+            @include fn.height(550px);
+            border: var.$border-color;
+            transition: all ease 1.6s;
+            z-index: 4;
+
+            &.social {
+                @include fn.height(650px);
+            }
+        }
+    }
+
+    &.front-active {
+        transform: rotateY(0deg);
+
+        &.active {
+            .front {
+                animation: colorChange 1s forwards;
+            }
+        }
+
+        .front {
+            border: 1px solid #fff;
+            transition: all ease 1.6s;
+            z-index: 4;
+        }
+
+        .right {
+            z-index: 1;
+        }
+    }
+
+    &.left-active {
+        transform: rotateY(-180deg);
+
+        &.active {
+            .left {
+                animation: colorChange 1s forwards;
+            }
+        }
+
+        .left {
+            border: 1px solid #fff;
+            transition: all ease 1.6s;
+            z-index: 4;
+        }
+
+        .right {
+            display: none;
+            z-index: 1;
+        }
+    }
+
+    .login,
+    .register,
+    .left {
+        @include fn.width(440px);
+
+        align-items: center;
+        border: 1px solid #fff;
+        border-radius: var.$border-radius;
+        box-shadow: var.$box-shadow;
+        display: flex;
+        flex-direction: column;
+        padding: 40px;
+        padding-top: 30px;
+        width: 100%;
+
+        .text-recovery {
+            background-color: transparent;
+            border: none;
+            color: var.$color-quaternary;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            max-width: 333px;
+            outline: none;
+            transition: all ease 500ms;
+        }
+    }
+
+    .front {
+        @include fn.height(480px);
+        position: absolute;
+        backface-visibility: hidden;
+
+        &.social {
+            @include fn.height(540px);
+        }
+    }
+
+    .right {
+        @include fn.height(450px);
+        backface-visibility: hidden;
+        overflow: hidden;
+        position: absolute;
+        transform: rotateY(180deg);
+        transition: all ease 0.8s;
+    }
+
+    .left {
+        @include fn.height(340px);
+        backface-visibility: hidden;
+        display: none;
+        overflow: hidden;
+        position: absolute;
+        transform: rotateY(-180deg);
+        transition: all ease 0.8s;
+
+
+    }
+
+    .icon {
+        font-size: 20px;
+    }
+
+    form {
+        @include fn.center-x;
+        display: grid;
+        // gap: 40px;
+        grid-template-columns: 1fr;
+    }
+}
+
+@keyframes colorChange {
+    0% {
+        border-color: #fff;
+    }
+
+    50% {
+        border-color: var.$color-secondary;
+    }
+
+    100% {
+        border-color: #fff;
+    }
+}

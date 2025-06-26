@@ -1,0 +1,52 @@
+@use "/sass/global/variables" as var;
+@use "/sass/global/mixin" as fn;
+
+.btn-submit-basic {
+  @include fn.center-x;
+  height: 42px;
+  position: relative;
+  width: 100%;
+
+  &,
+  * {
+    transition: 500ms ease all;
+  }
+
+  button {
+    background-color: transparent;
+    border: 1px solid var.$border-color;
+    border-radius: var.$border-radius;
+
+    color: var.$color-secondary;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    height: 100%;
+    max-width: calc(333px / 1.5);
+    outline: none;
+    position: relative;
+    width: 100%;
+
+    &:active {
+      background-color: rgba(var.$color-secondary, .7);
+      transform: scale(0.9);
+      color: var.$text-color-white;
+    }
+
+    &:disabled {
+      background-color: rgba(var.$color-secondary, .3) !important;
+      color: var.$text-color-white;
+      cursor: not-allowed;
+    }
+
+    &:focus {
+      background-color: rgba(var.$color-secondary, .7);
+      color: var.$text-color-white;
+    }
+
+    &:hover {
+      background-color: rgba(var.$color-secondary, .9);
+      color: var.$text-color-white;
+    }
+  }
+}

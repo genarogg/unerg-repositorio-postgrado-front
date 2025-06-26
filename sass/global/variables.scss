@@ -1,0 +1,39 @@
+$color-primary: #442897;
+$color-secondary: #3d65fd;
+$color-tertiary: #f5e6ed;
+$color-quaternary: #1c1c1c;
+
+$font-family: "Nunito", sans-serif;
+$font-size: 16px;
+$font-weight: 400;
+$line-height: 1.5;
+$letter-spacing: 0.5px;
+
+$border-radius: 10px;
+$box-shadow: 0px 0 30px rgba(#012a70, 0.1);
+$border-color: rgba(#1c1c1c, 0.5);
+$border: 1px solid $border-color;
+$blur: blur(10px);
+
+
+$transition: 600ms all ease;
+
+$bg-color-black: #1c1c1c;
+$text-color-black: #1c1c1c;
+
+$bg-color-white: #fff;
+$text-color-white: #fff;
+
+
+
+@mixin colorScheme() {
+    body.dark & {
+        color: $text-color-white;
+        background-color: $bg-color-black;
+    }
+
+    body:not(.dark) & {
+        color: $text-color-black;
+        background-color: $bg-color-white;
+    }
+}

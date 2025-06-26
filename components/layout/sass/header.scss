@@ -1,0 +1,159 @@
+@use "sass/global/mixin" as fn;
+@use "sass/global/variables" as var;
+
+.header-container {
+    width: 100%;
+    height: 70px;
+    // background-color: #0e0f1a;
+    border-bottom: 1px solid #fff;
+    box-shadow: rgba(1, 41, 112, 0.2) 0px 0px 30px;
+    z-index: 1000000;
+    position: relative;
+
+    .desktop-header,
+    .movile-header {
+        align-items: center;
+        display: flex;
+        height: inherit;
+        justify-content: space-between;
+        padding: 0 40px;
+        box-shadow: 0px 0 30px rgba(1, 41, 112, 0.2);
+    }
+
+    .titulo {
+
+        font-size: 10px;
+        font-weight: 600;
+
+        h1 {
+            color: var.$color-secondary;
+            font-size: 18px;
+        }
+
+    }
+
+    nav {
+        ul {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+
+            li {
+                list-style: none;
+                margin: 0 10px;
+                position: relative;
+
+                a {
+                    color: var.$color-secondary;
+                    text-decoration: none;
+                    font-size: 14px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    cursor: pointer;
+
+                    label {
+                        cursor: pointer;
+                    }
+                }
+
+                .name {
+                    color: #fff;
+                    text-decoration: none;
+                    font-size: 14px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                .user-img {
+                    border-radius: 50%;
+                    overflow: hidden;
+                    // @include fn.square(40px);
+                    border: 3px solid #fff;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                }
+            }
+        }
+    }
+
+    .movile-header {
+        padding: 0;
+
+        nav {
+            width: 100%;
+
+            ul {
+                padding: 0;
+                justify-content: space-between;
+
+                $margin: 40px;
+
+                &.elements {
+                    display: grid;
+                    grid-template-columns: 1fr 4fr 1fr;
+                    justify-content: center;
+                    justify-items: center;
+                }
+
+                li {
+                    &:first-child {
+                        margin-left: $margin;
+                    }
+
+                    &:last-child {
+                        margin-right: $margin;
+                    }
+                }
+            }
+        }
+    }
+
+    .fade-appear,
+    .fade-enter {
+        opacity: 0;
+    }
+
+    .fade-appear-active,
+    .fade-enter-active {
+        opacity: 1;
+        transition: opacity 1000ms;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .header-container .movile-header {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .header-container {
+        .desktop-header {
+            display: none !important;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .header-container .desktop-header,
+    .header-container .movile-header {
+        justify-items: center;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .header-container .movile-header nav ul.elements li {
+        &:first-child {
+            margin-left: 20px;
+        }
+
+        &:last-child {
+            margin-right: 20px;
+        }
+    }
+}

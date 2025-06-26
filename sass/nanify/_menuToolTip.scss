@@ -1,0 +1,14 @@
+@use "sass/global/variables" as var;
+
+.container-menu-tooltip {
+  ul {
+    li {
+      button {
+        color: var.$text-color-white;
+        &:hover {
+          color: var.$color-secondary !important;
+        }
+      }
+    }
+  }
+}

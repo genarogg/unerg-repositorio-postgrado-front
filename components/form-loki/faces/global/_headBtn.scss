@@ -1,0 +1,42 @@
+@use "/sass/global/variables" as var;
+
+.btn-sesion {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 50px;
+  width: 300px;
+  display: flex;
+  justify-content: space-around;
+
+  button {
+    background-color: transparent;
+    border: none;
+    color: var.$color-secondary;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    outline: none;
+
+    transition: 500ms all ease;
+
+    &:hover {
+      color: var.$color-primary;
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+
+    span {
+      text-decoration: none;
+    }
+  }
+
+  .span-sesion {
+    cursor: default;
+    color: var.$color-secondary
+  }
+}

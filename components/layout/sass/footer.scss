@@ -1,0 +1,50 @@
+@use "sass/global/variables" as var;
+@use "sass/global/mixin" as fn;
+
+
+
+.footer-container {
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.2);
+    height: 70px;
+
+    .desktop-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        height: inherit;
+        width: 100%;
+
+        p {
+            text-align: center;
+            color: var.$color-secondary;
+            font-size: 18px;
+            text-transform: uppercase;
+            width: 100%;
+            font-weight: 600;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .footer-container {
+
+        height: 50px;
+
+        .desktop-footer {
+
+            padding: 0 6px;
+
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .footer-container {
+        .desktop-footer {
+            p {
+                font-size: 14px;
+            }
+        }
+    }
+}

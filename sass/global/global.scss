@@ -1,0 +1,40 @@
+@use "./variables" as var;
+@use "./mixin" as fn;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: "Nunito", "Albert Sans";
+  
+}
+
+a {
+  text-decoration: none;
+  color: var.$text-color-white;
+  display: flex;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+ul {
+  list-style: none;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+@include fn.scroll($color: var.$color-quaternary, $bgColor: var.$color-secondary);
