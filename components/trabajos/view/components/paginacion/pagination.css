@@ -1,0 +1,237 @@
+.table-pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding: 8px 0;
+  min-height: 40px;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.table-pagination-info {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.pagination-info-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.table-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.table-pagination-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.table-pagination-btn:hover:not(:disabled) {
+  border-color: #9ca3af;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-pagination-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.table-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: #f1f5f9;
+  color: #94a3b8;
+  transform: none;
+  box-shadow: none;
+}
+
+.table-page-number {
+  padding: 0 8px;
+  font-weight: 600;
+}
+
+.table-pagination-btn.active {
+  background-color: #1f2937;
+  border-color: #1f2937;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(31, 41, 55, 0.2);
+}
+
+.table-pagination-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: #9ca3af;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* Clase para forzar modo compacto */
+.table-pagination-container.force-compact {
+  --max-pages-to-show: 3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .table-pagination-container {
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 0;
+    margin-top: 16px;
+  }
+
+  .table-pagination-info {
+    order: 2;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .table-pagination-controls {
+    order: 1;
+    justify-content: center;
+    width: 100%;
+    gap: 2px;
+  }
+
+  .pagination-info-text {
+    font-size: 12px;
+    padding: 4px 8px;
+    background-color: transparent;
+    border: none;
+    backdrop-filter: none;
+  }
+
+  .table-pagination-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 6px;
+    font-size: 12px;
+    border-radius: 4px;
+  }
+
+  .table-page-number {
+    min-width: 32px;
+    padding: 0 4px;
+  }
+
+  .table-pagination-ellipsis {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-pagination-container {
+    flex-direction: column;
+    gap: 6px;
+    padding: 4px 0;
+  }
+
+  .table-pagination-info {
+    order: 2;
+  }
+
+  .table-pagination-controls {
+    order: 1;
+    gap: 1px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .pagination-info-text {
+    font-size: 11px;
+    padding: 2px 6px;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+  }
+
+  .table-pagination-btn {
+    min-width: 28px;
+    height: 28px;
+    padding: 0 4px;
+    font-size: 11px;
+    border-radius: 4px;
+  }
+
+  .table-page-number {
+    min-width: 28px;
+    padding: 0 2px;
+  }
+
+  .table-pagination-ellipsis {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Solo iconos en móviles pequeños */
+  .table-pagination-prev,
+  .table-pagination-next {
+    min-width: 28px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 320px) {
+  .pagination-info-text {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+
+  .table-pagination-btn {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 2px;
+    font-size: 10px;
+    border-radius: 3px;
+  }
+
+  .table-page-number {
+    min-width: 24px;
+    padding: 0 1px;
+  }
+
+  .table-pagination-ellipsis {
+    width: 24px;
+    height: 24px;
+  }
+
+  .table-pagination-controls {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .table-pagination-controls::-webkit-scrollbar {
+    display: none;
+  }
+}

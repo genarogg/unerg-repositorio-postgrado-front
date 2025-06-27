@@ -1,0 +1,143 @@
+/* Contenedor de filtros de fecha */
+.date-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  /* width: 100%; */
+}
+
+.table-date-input {
+  width: 50%; /* Changed to 50% as requested */
+  width: 150px;
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #ffffff;
+  outline: none;
+  color: #374151;
+  font-family: inherit;
+  flex: 1;
+
+  min-width: 150px;
+  max-width: 150px; /* Ensures it doesn't overflow */
+}
+
+.table-date-input[type="date"] {
+  color: #020817;
+  font-weight: 600;
+}
+
+.table-date-input:active,
+.table-date-input:focus {
+  outline-offset: 2px;
+  outline: 2px solid #020817;
+}
+
+.table-date-input::-webkit-calendar-picker-indicator {
+  color: #9ca3af;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.table-date-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Para Firefox */
+.table-date-input::-moz-calendar-picker-indicator {
+  color: #9ca3af;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.table-date-input::-moz-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Responsive styles para filtros de fecha - 50% width each */
+@media (max-width: 1200px) {
+  .date-filter-group {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .date-filter-group {
+    gap: 8px;
+  }
+
+  .table-date-input {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 950px) {
+  .date-filter-group {
+    width: 100%;
+  }
+
+  .table-date-input {
+    max-width: 100%;
+    width: 100%; /* Ensures it takes full width */
+    min-width: 150px; /* Ensures it doesn't shrink too much */
+  }
+}
+
+@media (max-width: 768px) {
+  .date-filter-group {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .table-date-input {
+    font-size: 16px; /* Previene zoom en iOS */
+    height: 42px;
+    padding: 12px;
+  }
+  .table-date-input {
+    max-width: 100%; /* Full width on smaller screens */
+    width: 100%; /* Ensures it takes full width */
+    min-width: 150px; /* Ensures it doesn't shrink too much */
+  }
+}
+
+@media (max-width: 640px) {
+  .date-filter-group {
+    gap: 6px;
+  }
+
+  .table-date-input {
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .date-filter-group {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .table-date-input {
+    width: 100%; /* Full width on mobile when stacked */
+    height: 44px;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .date-filter-group {
+    gap: 6px;
+  }
+
+  .table-date-input {
+    height: 42px;
+    padding: 10px;
+  }
+}

@@ -1,8 +1,8 @@
 "use client"
 import type React from "react"
 import { useState, useEffect, useCallback, useMemo, memo, useRef, useImperativeHandle, forwardRef } from "react"
-import { Edit, UserPlus, Shield, User, Mail, CreditCard } from "lucide-react"
-import { useGlobal, useGlobalStatic, type DataItem, type UserRole, type UserStatus } from "../../../context/Global"
+import { SquarePen, UserPlus, Shield, User } from "lucide-react"
+import { useGlobal, useGlobalStatic, type DataItem, type UserStatus } from "../../../context/Global"
 import Modal from "../../../../ux/modal"
 import Input from "../../../../ux/input"
 import {
@@ -19,13 +19,9 @@ interface AggEditarProps {
   item?: DataItem
 }
 
-// Interface para el formulario
+// Interface para el formulario simplificado
 interface FormData {
-  name: string
-  lastName: string
-  email: string
-  role: UserRole | undefined
-  cedula: string
+  nombre: string
   estado: UserStatus
 }
 
@@ -35,14 +31,15 @@ interface FormRef {
   isLoading: boolean
 }
 
-// Componente del formulario con forwardRef
+// 🔥 OPTIMIZACIÓN CRÍTICA: Componente del formulario con forwardRef
 const AggEditarForm = memo(
   forwardRef<FormRef, AggEditarProps>(({ item }, ref) => {
+    // 🔥 OPTIMIZACIÓN CRÍTICA: Usar métodos específicos de Zustand
     const updateItem = useGlobal((state) => state.updateItem)
     const setData = useGlobal((state) => state.setData)
     const dataItems = useGlobal((state) => state.data.items)
 
-    const roles = useGlobalStatic((state) => state.roles)
+    // 🔥 OPTIMIZACIÓN: Suscripción selectiva al estado estático
     const badges = useGlobalStatic((state) => state.badges)
 
     const isEditMode = !!item
@@ -50,33 +47,24 @@ const AggEditarForm = memo(
     const [isLoading, setIsLoading] = useState(false)
 
     const [formData, setFormData] = useState<FormData>({
-      name: "",
-      lastName: "",
-      email: "",
-      role: undefined,
-      cedula: "",
+      nombre: "",
       estado: "ACTIVO",
     })
 
+    // 🔥 OPTIMIZACIÓN: Memoizar resetForm
     const resetForm = useCallback(() => {
       setFormData({
-        name: "",
-        lastName: "",
-        email: "",
-        role: undefined,
-        cedula: "",
+        nombre: "",
         estado: "ACTIVO",
       })
     }, [])
 
+    // 🔥 OPTIMIZACIÓN CRÍTICA: useEffect con dependencias específicas
     useEffect(() => {
       if (isEditMode && item) {
+        // Solo actualizar si los datos realmente cambiaron
         const newFormData = {
-          name: item.name || "",
-          lastName: item.lastName || "",
-          email: item.email || "",
-          role: item.role,
-          cedula: item.cedula || "",
+          nombre: item.nombre || "",
           estado: item.estado || "ACTIVO",
         }
 
@@ -86,29 +74,16 @@ const AggEditarForm = memo(
       }
     }, [item, isEditMode, resetForm])
 
+    // 🔥 OPTIMIZACIÓN: Memoizar handlers
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target
       setFormData((prev) => ({ ...prev, [name]: value }))
     }, [])
 
-    const handleSelectChange = useCallback(
-      (value: string | string[]) => {
-        const roleValue = Array.isArray(value) ? value[0] : value
-
-        const isValidRole = (val: string): val is UserRole => {
-          return Object.values(roles).includes(val as UserRole)
-        }
-
-        if (isValidRole(roleValue)) {
-          setFormData((prev) => ({ ...prev, role: roleValue }))
-        }
-      },
-      [roles],
-    )
-
     const handleEstadoChange = useCallback((value: string | string[]) => {
       const stateValue = Array.isArray(value) ? value[0] : value
 
+      // Type guard para validar que el estado es válido
       const isValidStatus = (val: string): val is UserStatus => {
         return val === "ACTIVO" || val === "INACTIVO"
       }
@@ -118,18 +93,21 @@ const AggEditarForm = memo(
       }
     }, [])
 
+    // 🔥 OPTIMIZACIÓN CORREGIDA: Generar ID basado en el máximo existente + 1
     const generateId = useCallback(() => {
       if (dataItems.length === 0) {
-        return 1
+        return 1 // Si no hay elementos, comenzar con 1
       }
 
+      // Encontrar el ID máximo y sumarle 1
       const maxId = Math.max(...dataItems.map((item) => item.id))
       return maxId + 1
     }, [dataItems])
 
     const handleSave = useCallback(async () => {
-      if (!formData.role) {
-        console.error("El rol es requerido")
+      // Validación: el nombre es requerido
+      if (!formData.nombre.trim()) {
+        console.error("El nombre es requerido")
         return
       }
 
@@ -137,11 +115,15 @@ const AggEditarForm = memo(
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000))
 
-        const itemData = { ...formData, role: formData.role }
+        const itemData = {
+          nombre: formData.nombre.trim(),
+          estado: formData.estado,
+        }
 
         if (isEditMode) {
           if (!item?.id) throw new Error("No se puede actualizar: ID del item no encontrado")
 
+          // 🔥 USAR MÉTODO ESPECÍFICO: updateItem para edición
           updateItem(item.id, itemData)
         } else {
           const newItem: DataItem = {
@@ -149,16 +131,18 @@ const AggEditarForm = memo(
             ...itemData,
           }
 
+          // 🔥 USAR MÉTODO ESPECÍFICO: setData con preservación de selecciones
           const updatedItems = [newItem, ...dataItems]
           setData({ items: updatedItems })
         }
       } catch (error) {
-        console.error(`Error al ${isEditMode ? "actualizar" : "agregar"} usuario:`, error)
+        console.error(`Error al ${isEditMode ? "actualizar" : "agregar"} item:`, error)
       } finally {
         setIsLoading(false)
       }
     }, [formData, isEditMode, item?.id, updateItem, setData, generateId, dataItems])
 
+    // 🔥 NUEVO: Exponer funciones a través del ref
     useImperativeHandle(
       ref,
       () => ({
@@ -168,72 +152,22 @@ const AggEditarForm = memo(
       [handleSave, isLoading],
     )
 
-    const roleOptions = useMemo(
-      () =>
-        (Object.entries(roles) as [keyof typeof roles, UserRole][]).map(([key, value]) => (
-          <SelectItem key={key} value={value}>
-            {badges.roles[key]?.name || value}
-          </SelectItem>
-        )),
-      [roles, badges.roles],
-    )
-
     return (
       <div className="user-form">
         <div style={{ marginBottom: "42px", marginTop: "32px" }}>
           <Input
-            name="name"
+            name="nombre"
             type="text"
-            placeholder="Ingrese el nombre"
+            placeholder="Ingrese el nombre de la línea de investigación"
             required
             onChange={handleChange}
-            value={formData.name}
+            value={formData.nombre}
             disabled={isLoading}
             icon={<User size={16} />}
             hasContentState={true}
           />
         </div>
-        <div style={{ marginBottom: "42px" }}>
-          <Input
-            name="lastName"
-            type="text"
-            placeholder="Ingrese el apellido"
-            required
-            onChange={handleChange}
-            value={formData.lastName}
-            disabled={isLoading}
-            icon={<User size={16} />}
-            hasContentState={true}
-          />
-        </div>
-        <div style={{ marginBottom: "42px" }}>
-          <Input
-            name="email"
-            type="email"
-            placeholder="ejemplo@correo.com"
-            required
-            onChange={handleChange}
-            value={formData.email}
-            disabled={isLoading}
-            icon={<Mail size={16} />}
-            hasContentState={true}
-          />
-        </div>
-        <div style={{ marginBottom: "42px" }}>
-          <Input
-            name="cedula"
-            type="number"
-            placeholder="cedula"
-            required
-            onChange={handleChange}
-            value={formData.cedula}
-            disabled={isLoading}
-            icon={<CreditCard size={16} />}
-            hasContentState={true}
-            minLength={7}
-            maxLength={8}
-          />
-        </div>
+
         <div style={{ marginBottom: "15px" }}>
           <label
             style={{
@@ -246,32 +180,7 @@ const AggEditarForm = memo(
             }}
           >
             <Shield size={16} style={{ marginRight: "8px", marginLeft: "10px" }} />
-            Rol del usuario
-          </label>
-          <Select value={formData.role || ""} onValueChange={handleSelectChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="Seleccionar rol" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectLabel>Roles disponibles</SelectLabel>
-              <SelectSeparator />
-              {roleOptions}
-            </SelectContent>
-          </Select>
-        </div>
-        <div style={{ marginBottom: "15px" }}>
-          <label
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "8px",
-              fontSize: "14px",
-              fontWeight: "500",
-              color: "#374151",
-            }}
-          >
-            <Shield size={16} style={{ marginRight: "8px", marginLeft: "10px" }} />
-            Estado del usuario
+            Estado de la línea de investigación
           </label>
           <Select value={formData.estado} onValueChange={handleEstadoChange}>
             <SelectTrigger>
@@ -294,25 +203,29 @@ const AggEditarForm = memo(
   }),
 )
 
+// Establecer displayName para debugging
 AggEditarForm.displayName = "AggEditarForm"
 
-// Componente principal conectado al formulario
+// 🔥 OPTIMIZACIÓN CRÍTICA: Componente principal conectado al formulario
 const AggEditar: React.FC<AggEditarProps> = memo(({ item }) => {
   const isEditMode = !!item
   const formRef = useRef<FormRef>(null)
 
+  // 🔥 SOLUCIONADO: handleSave ahora conecta con el formulario
   const handleSave = useCallback(async () => {
     if (formRef.current) {
       await formRef.current.handleSave()
     }
   }, [])
 
+  // 🔥 OPTIMIZACIÓN: Obtener isLoading del formulario
   const isLoading = formRef.current?.isLoading || false
 
+  // 🔥 OPTIMIZACIÓN: Memoizar props del modal
   const modalProps = useMemo(
     () => ({
-      title: isEditMode ? "" : "Agregar Usuario",
-      icon: isEditMode ? <Edit size={16} /> : <UserPlus size={16} />,
+      title: isEditMode ? "" : "Agregar Línea de Investigación",
+      icon: isEditMode ? <SquarePen size={16} /> : <UserPlus size={16} />,
       buttonClassName: `table-modal-btn save-user-btn ${isEditMode ? "action-btn" : ""}`,
       buttonText: isLoading
         ? isEditMode
@@ -320,14 +233,15 @@ const AggEditar: React.FC<AggEditarProps> = memo(({ item }) => {
           : "Guardando..."
         : isEditMode
           ? "Guardar Cambios"
-          : "Guardar Usuario",
+          : "Guardar Línea",
       onclick: handleSave,
       cancel: isEditMode,
-      lazy: true,
+      lazy: true, // 🔥 CRÍTICO: Activar lazy loading
     }),
     [isEditMode, isLoading, handleSave],
   )
 
+  // 🔥 OPTIMIZACIÓN CRÍTICA: Renderizar el formulario como función lazy
   const renderForm = useCallback(() => {
     return <AggEditarForm ref={formRef} item={item} />
   }, [item])
@@ -335,6 +249,7 @@ const AggEditar: React.FC<AggEditarProps> = memo(({ item }) => {
   return <Modal {...modalProps}>{renderForm}</Modal>
 })
 
+// Establecer displayName para debugging
 AggEditar.displayName = "AggEditar"
 
 export default AggEditar

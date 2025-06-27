@@ -1,0 +1,338 @@
+/* Contenedor principal del header */
+.table-header-container {
+  /* margin-bottom: 24px; */
+  position: relative;
+}
+
+/* Sección de controles del header */
+.table-header-controls-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+  max-width: 100%;
+  overflow: visible;
+  min-height: 60px;
+  flex-wrap: nowrap;
+}
+
+.box-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 0;
+  flex: 1;
+  max-width: 400px;
+}
+
+.box-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.box-right {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+/* Información responsive */
+.responsive-info {
+  display: flex;
+  align-items: center;
+}
+
+.responsive-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* Divisor del header */
+.table-header-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin-bottom: 20px;
+}
+
+/* Filtro de roles */
+.table-role-filter-container {
+  display: flex;
+  align-items: center;
+  min-width: 160px;
+}
+
+.table-role-filter-container .select-root {
+  width: 100%;
+  min-width: 160px;
+}
+
+.table-role-filter-container .select-trigger {
+  height: 40px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  color: #374151;
+}
+
+.table-role-filter-container .select-trigger:hover {
+  border-color: #9ca3af;
+  background-color: #f9fafb;
+}
+
+.table-role-filter-container .select-trigger:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.table-role-filter-container .select-value {
+  font-weight: 500;
+}
+
+/* User role select */
+.user-role-select-container {
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.user-role-select-container .select-root {
+  width: 100%;
+  min-width: 120px;
+}
+
+.user-role-select-container .select-trigger {
+  height: 40px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  color: #374151;
+  font-weight: 600;
+}
+
+.user-role-select-container .select-trigger:hover {
+  border-color: #9ca3af;
+  background-color: #f9fafb;
+}
+
+.user-role-select-container .select-trigger:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.user-role-select-container .select-value {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Contenedor de estado */
+.table-status-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Contenedor de toggle de vista */
+.table-view-toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Contenedores de tabla */
+.table-management-container {
+  margin-bottom: 100px;
+}
+
+.table-container {
+  margin-bottom: 20px;
+}
+
+/* Responsive stacking para controles de header - Mucho más responsivo */
+@media (max-width: 1200px) {
+  .table-header-controls-section {
+    gap: 12px;
+  }
+
+  .box-left {
+    /* max-width: 350px;
+    min-width: 350px; */
+  }
+
+  .box-right {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .table-header-controls-section {
+    /* flex-direction: column;
+    align-items: stretch; */
+    gap: 16px;
+  }
+
+  /* .box-left,
+  .box-center,
+  .box-right {
+    width: 100%;
+    max-width: none;
+  } */
+
+  .box-left {
+    justify-content: flex-start;
+    order: 1;
+  }
+
+  .box-center {
+    justify-content: flex-start;
+    order: 3;
+  }
+
+  .box-right {
+    justify-content: flex-end;
+    order: 2;
+    position: relative;
+  }
+}
+
+@media (max-width: 950px) {
+  .table-header-controls-section {
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .table-header-container {
+    margin-bottom: 24px;
+    /* position: relative; */
+  }
+
+  .box-left,
+  .box-center,
+  .box-right {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .box-left {
+    justify-content: stretch;
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .box-right {
+    justify-content: stretch;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .always-active-filters {
+    width: 100%;
+  }
+
+  .filter-content-area .always-active-filters:last-child {
+    margin-left: 0 !important;
+  }
+
+  .always-active-filters .select-root {
+    max-width: 100%;
+  }
+
+  .always-active-filter {
+    width: 100%;
+  }
+
+  .table-role-filter-container {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .table-role-filter-container .select-root {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .user-role-select-container {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .user-role-select-container .select-root {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .responsive-info {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-view-toggle-container {
+    justify-content: center;
+  }
+
+  /* Wrapper para el botón modal */
+  .modal-button-wrapper {
+    width: 100%;
+  }
+
+  .modal-button-wrapper .modal-trigger {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .table-header-controls-section {
+    gap: 16px;
+  }
+
+  .box-right {
+    gap: 10px;
+  }
+
+  .responsive-badge {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-header-controls-section {
+    gap: 12px;
+  }
+
+  .box-left {
+    gap: 8px;
+  }
+
+  .box-right {
+    gap: 14px;
+  }
+
+  .responsive-badge {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+}
+
+@media (max-width: 360px) {
+  .table-header-container {
+    margin-bottom: 24px;
+  }
+
+  .table-header-controls-section {
+    gap: 10px;
+    min-height: auto;
+  }
+}

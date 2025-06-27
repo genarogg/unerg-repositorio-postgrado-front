@@ -4,16 +4,16 @@ const setConfigured = ({ rolUser, roles }: any) => {
   // Configuración base
   const config = {
     rolUser: rolUser,
-    select: true,
-    cuadricula: true,
+    select: false,
+    cuadricula: false,
 
     columns: [
       { column: "id" },
       { column: "name" },
       { column: "lastName" },
       { column: "email" },
-      { column: "role" },
       { column: "cedula" },
+      { column: "role" },
       { column: "estado" },
       { column: "acciones" },
     ],
