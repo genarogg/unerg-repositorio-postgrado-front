@@ -33,17 +33,20 @@ const Header: React.FC<HeaderProps> = () => {
         { href: "/", label: "Inicio" },
     ];
 
+    console.log("isAuthenticated", isAuthenticated);
+
     if (isAuthenticated) {
         menuItems.push(
-            { href: "/dashboard", label: "Dashboard" },
-            { href: "/profile", label: "Perfil" },
+    
+    { href: "/dashboard/trabajos", label: "trabajos" },
+            { href: "/dashboard/usuarios", label: "usuarios" },
             { href: "/", label: "Salir" }
         );
     }
     else {
         menuItems.push(
-            { href: "/dashboard/documentos", label: "Documentos" },
-            { href: "/dashboard/usuarios", label: "usuarios" },
+           
+            
             { href: "/login", label: "login" },
         );
     }

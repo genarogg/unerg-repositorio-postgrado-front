@@ -122,14 +122,7 @@ const Paginacion: React.FC<PaginacionProps> = ({
 
     // Texto de información
     const paginationText = `Mostrando ${paginationInfo.startItem} a ${paginationInfo.endItem} de ${paginationInfo.totalItems} resultados`
-    console.log("Paginación renderizada", {
-        currentPage: paginationInfo.currentPage,
-        totalPages,
-        itemsPerPage,
-        totalItems: paginationInfo.totalItems,
-    })
-
-    console.log(loading, items.length, totalPages)
+   
 
     // No mostrar si está cargando, vacío o solo hay una página
     if (loading || items.length === 0) {

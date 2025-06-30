@@ -187,7 +187,7 @@ const BtnSubmitBasic = ({
         });
 
         if (success || type === "success") {
-          console.log(datos);
+       
           router.push("/dashboard");
         }
       }

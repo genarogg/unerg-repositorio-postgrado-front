@@ -3,7 +3,7 @@ import type React from "react"
 import { useState, useCallback, memo, useRef, useImperativeHandle, forwardRef } from "react"
 import { useMemo } from "react"
 
-import { Key } from "lucide-react"
+import { LockKeyhole } from "lucide-react"
 import { useGlobal, type DataItem } from "../../../context/Global"
 import Modal from "../../../../ux/modal"
 import Input from "../../../../ux/input"
@@ -14,7 +14,7 @@ interface ChangePasswordProps {
 
 // Interface para el formulario
 interface PasswordFormData {
-  currentPassword: string
+
   newPassword: string
   confirmPassword: string
 }
@@ -32,14 +32,13 @@ const ChangePasswordForm = memo(
 
     const [isLoading, setIsLoading] = useState(false)
     const [showPasswords, setShowPasswords] = useState({
-      current: false,
       new: false,
       confirm: false,
     })
     const [errors, setErrors] = useState<Partial<PasswordFormData>>({})
 
     const [formData, setFormData] = useState<PasswordFormData>({
-      currentPassword: "",
+  
       newPassword: "",
       confirmPassword: "",
     })
@@ -57,17 +56,14 @@ const ChangePasswordForm = memo(
       [errors],
     )
 
-    const togglePasswordVisibility = useCallback((field: "current" | "new" | "confirm") => {
+    const togglePasswordVisibility = useCallback((field: "new" | "confirm") => {
       setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }))
     }, [])
 
     const validateForm = useCallback((): boolean => {
       const newErrors: Partial<PasswordFormData> = {}
 
-      if (!formData.currentPassword) {
-        newErrors.currentPassword = "La contraseña actual es requerida"
-      }
-
+    
       if (!formData.newPassword) {
         newErrors.newPassword = "La nueva contraseña es requerida"
       } else if (formData.newPassword.length < 6) {
@@ -99,7 +95,7 @@ const ChangePasswordForm = memo(
 
         // Resetear formulario
         setFormData({
-          currentPassword: "",
+    
           newPassword: "",
           confirmPassword: "",
         })
@@ -129,20 +125,7 @@ const ChangePasswordForm = memo(
           <p style={{ margin: 0, color: "#6b7280", fontSize: "14px" }}>{item.email}</p>
         </div>
 
-        <div style={{ marginBottom: "24px" }}>
-          <Input
-            name="currentPassword"
-            type="password"
-            placeholder="Contraseña actual"
-            required
-            onChange={handleChange}
-            value={formData.currentPassword}
-            disabled={isLoading}
-            icon={<Key size={16} />}
-            error={errors.currentPassword}
-            hasContentState={true}
-          />
-        </div>
+
 
         <div style={{ marginBottom: "24px" }}>
           <Input
@@ -153,7 +136,7 @@ const ChangePasswordForm = memo(
             onChange={handleChange}
             value={formData.newPassword}
             disabled={isLoading}
-            icon={<Key size={16} />}
+            icon={<LockKeyhole size={16} />}
             error={errors.newPassword}
             hasContentState={true}
           />
@@ -168,7 +151,7 @@ const ChangePasswordForm = memo(
             onChange={handleChange}
             value={formData.confirmPassword}
             disabled={isLoading}
-            icon={<Key size={16} />}
+            icon={<LockKeyhole size={16} />}
             error={errors.confirmPassword}
             hasContentState={true}
           />
@@ -211,7 +194,7 @@ const ChangePasswordModal: React.FC<ChangePasswordProps> = memo(({ item }) => {
   const modalProps = useMemo(
     () => ({
       title: "",
-      icon: <Key size={16} />,
+      icon: <LockKeyhole size={16} />,
       buttonClassName: "action-btn",
       buttonText: isLoading ? "Cambiando..." : "Cambiar Contraseña",
       onclick: handleSave,

@@ -67,13 +67,14 @@ form {
         }
 
         .label-ico {
-            width: 34px;
+            width: 24px;
         }
     }
 
     .label-ico,
     .view-pass {
         @include center-flex-xy();
+        justify-content: flex-start;
         $size: 46px;
 
         height: inherit;

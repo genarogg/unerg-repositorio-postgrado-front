@@ -15,10 +15,9 @@ interface ModalProps {
   cancel?: boolean
   onCancel?: () => void
   cancelText?: string
-  lazy?: boolean // 🔥 NUEVA: Controla si usar lazy loading
+  lazy?: boolean 
 }
 
-// 🔥 OPTIMIZACIÓN CRÍTICA: Memoizar el Modal
 const Modal = memo(function Modal({ 
   title, 
   icon, 
@@ -30,7 +29,7 @@ const Modal = memo(function Modal({
   cancel = false,
   onCancel,
   cancelText = "Cancelar",
-  lazy = true // 🔥 NUEVA: Por defecto lazy loading está activado
+  lazy = true 
 }: ModalProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)

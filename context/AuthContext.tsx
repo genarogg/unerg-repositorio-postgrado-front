@@ -185,7 +185,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             console.log('Login exitoso');
 
             // Navegar al dashboard después del login exitoso
-            router.push('/dashboard');
+            router.push('/dashboard/trabajos');
 
         } catch (error) {
             console.error('Error en login:', error);
@@ -223,13 +223,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 body: JSON.stringify({ token: storedToken }),
             });
 
-           
-
+            
+            
             const responseData = await response.json();
 
-             
-
-            if (response.ok && responseData.success) {
+            if (response.ok ) {
                 // Si el token es válido y no está en el estado, actualizarlo
                 if (!state.token) {
                     dispatch({
