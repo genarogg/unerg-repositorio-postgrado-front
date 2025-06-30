@@ -21,59 +21,57 @@ const Paginacion: React.FC<PaginacionProps> = ({
     showInfo = true,
     showControls = true,
     compact = false,
-    itemsPerPage = 10,
+    itemsPerPage = 100,
 }) => {
     const { data } = useGlobal()
     const { initialData } = useData()
 
-    const { page, loading, items } = data
+    const { page, loading, items, totalItems, totalPages } = data
 
-    // Calcular total de páginas basado en los items totales
-    // Nota: Aquí asumo que tienes todos los items, pero podrías necesitar
-    // un campo totalItems en tu estado para paginación del servidor
-    const totalPages = Math.ceil(items.length / itemsPerPage) || 1
+    // Usar totalPages del estado global si está disponible, sino calcularlo
+    const calculatedTotalPages = totalPages || Math.ceil((totalItems || items.length) / itemsPerPage) || 1
 
     // Información de paginación
     const paginationInfo = useMemo(() => {
         const startItem = (page - 1) * itemsPerPage + 1
-        const endItem = Math.min(page * itemsPerPage, items.length)
-        const totalItems = items.length
+        const endItem = Math.min(page * itemsPerPage, totalItems || items.length)
+        const total = totalItems || items.length
 
         return {
             currentPage: page,
-            totalPages,
+            totalPages: calculatedTotalPages,
             startItem,
             endItem,
-            totalItems,
+            totalItems: total,
             hasPrev: page > 1,
-            hasNext: page < totalPages,
+            hasNext: page < calculatedTotalPages,
         }
-    }, [page, totalPages, items.length, itemsPerPage])
+    }, [page, calculatedTotalPages, items.length, totalItems, itemsPerPage])
 
     // Generar números de página a mostrar
     const pageNumbers = useMemo(() => {
         const pages: (number | string)[] = []
         const maxPages = compact ? 3 : maxPagesToShow
 
-        if (totalPages <= maxPages) {
+        if (calculatedTotalPages <= maxPages) {
             // Mostrar todas las páginas si son pocas
-            for (let i = 1; i <= totalPages; i++) {
+            for (let i = 1; i <= calculatedTotalPages; i++) {
                 pages.push(i)
             }
         } else {
             // Lógica compleja para mostrar páginas con elipsis
             const halfMax = Math.floor(maxPages / 2)
             let startPage = Math.max(1, page - halfMax)
-            let endPage = Math.min(totalPages, page + halfMax)
+            let endPage = Math.min(calculatedTotalPages, page + halfMax)
 
             // Ajustar si estamos cerca del inicio
             if (page <= halfMax) {
-                endPage = Math.min(totalPages, maxPages)
+                endPage = Math.min(calculatedTotalPages, maxPages)
             }
 
             // Ajustar si estamos cerca del final
-            if (page > totalPages - halfMax) {
-                startPage = Math.max(1, totalPages - maxPages + 1)
+            if (page > calculatedTotalPages - halfMax) {
+                startPage = Math.max(1, calculatedTotalPages - maxPages + 1)
             }
 
             // Agregar primera página y elipsis si es necesario
@@ -90,20 +88,20 @@ const Paginacion: React.FC<PaginacionProps> = ({
             }
 
             // Agregar elipsis y última página si es necesario
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1 && showEllipsis) {
+            if (endPage < calculatedTotalPages) {
+                if (endPage < calculatedTotalPages - 1 && showEllipsis) {
                     pages.push("ellipsis-end")
                 }
-                pages.push(totalPages)
+                pages.push(calculatedTotalPages)
             }
         }
 
         return pages
-    }, [page, totalPages, maxPagesToShow, compact, showEllipsis])
+    }, [page, calculatedTotalPages, maxPagesToShow, compact, showEllipsis])
 
     // Funciones de control
     const goToPage = async (newPage: number) => {
-        if (newPage >= 1 && newPage <= totalPages && newPage !== page) {
+        if (newPage >= 1 && newPage <= calculatedTotalPages && newPage !== page) {
             await initialData(newPage, itemsPerPage)
         }
     }
@@ -125,11 +123,9 @@ const Paginacion: React.FC<PaginacionProps> = ({
     
 
     // No mostrar si está cargando, vacío o solo hay una página
-    if (loading || items.length === 0) {
-        console.log("Paginación no mostrada: Cargando, vacío o una sola página")
+    if (loading || (totalItems || items.length) === 0) {
         return null
     }
-
 
     return (
         <div className={`table-pagination-container ${compact ? "compact" : ""}`}>

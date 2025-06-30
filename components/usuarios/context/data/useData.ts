@@ -9,7 +9,7 @@ const useData = () => {
   const API = "http://localhost:4000/auth/usuarios" // URL actualizada
 
   const initialData = useCallback(
-    async (page = 1, limit = 10) => {
+    async (page: number = 1, itemsPerPage: number = 100) => {
       setData({ loading: true })
       try {
         const res = await fetch(API)
@@ -34,32 +34,38 @@ const useData = () => {
           estado: usuario.estado ? "ACTIVO" : "INACTIVO",
         }))
 
-        // Calcular paginación para datos de la API
-        const allItems = mappedData
-        const startIndex = (page - 1) * limit
-        const endIndex = startIndex + limit
+        // Aplicar paginación cliente-side
+        const allItems = mappedData.reverse()
+        const totalItems = allItems.length
+        const totalPages = Math.ceil(totalItems / itemsPerPage)
+        
+        // Calcular índices para la paginación
+        const startIndex = (page - 1) * itemsPerPage
+        const endIndex = startIndex + itemsPerPage
         const paginatedItems = allItems.slice(startIndex, endIndex)
-        const totalPages = Math.ceil(allItems.length / limit)
 
         setData({
-          items: paginatedItems.reverse(),
-          totalItems: allItems.length,
+          items: paginatedItems,
+          totalItems,
           page,
           totalPages,
           loading: false,
         })
       } catch (error) {
         console.error("Error fetching data:", error)
-        // Fallback con datos fake paginados
+        
+        // Fallback con datos fake también paginados
         const allItems = dataFake.usuarios.data
-        const startIndex = (page - 1) * limit
-        const endIndex = startIndex + limit
+        const totalItems = allItems.length
+        const totalPages = Math.ceil(totalItems / itemsPerPage)
+        
+        const startIndex = (page - 1) * itemsPerPage
+        const endIndex = startIndex + itemsPerPage
         const paginatedItems = allItems.slice(startIndex, endIndex)
-        const totalPages = Math.ceil(allItems.length / limit)
 
         setData({
           items: paginatedItems,
-          totalItems: allItems.length,
+          totalItems,
           page,
           totalPages,
           loading: false,

@@ -7,7 +7,7 @@ import "./modal.css"
 interface ModalProps {
   title?: string
   icon?: React.ReactNode
-  children: React.ReactNode | (() => React.ReactNode) // 🔥 NUEVA: Permite children como función
+  children: React.ReactNode | (() => React.ReactNode)
   buttonClassName?: string
   buttonText?: string
   onclick?: () => void
@@ -15,9 +15,12 @@ interface ModalProps {
   cancel?: boolean
   onCancel?: () => void
   cancelText?: string
-  lazy?: boolean 
+  lazy?: boolean
+  preventClose?: boolean // 🔥 NUEVA: Previene el cierre del modal
+  onValidateClose?: () => boolean // 🔥 NUEVA: Función de validación antes de cerrar
 }
 
+// 🔥 OPTIMIZACIÓN CRÍTICA: Memoizar el Modal
 const Modal = memo(function Modal({ 
   title, 
   icon, 
@@ -29,7 +32,9 @@ const Modal = memo(function Modal({
   cancel = false,
   onCancel,
   cancelText = "Cancelar",
-  lazy = true 
+  lazy = true,
+  preventClose = false, // 🔥 NUEVA: Por defecto se puede cerrar
+  onValidateClose // 🔥 NUEVA: Función de validación opcional
 }: ModalProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
@@ -42,22 +47,36 @@ const Modal = memo(function Modal({
     setHasBeenOpened(true)
   }, [])
 
+  // 🔥 NUEVA: Función para validar si se puede cerrar (solo para guardar)
+  const canCloseOnSave = useCallback(() => {
+    if (preventClose) return false
+    if (onValidateClose) return onValidateClose()
+    return true
+  }, [preventClose, onValidateClose])
+
+  // Función para cerrar sin validación (cancelar/cerrar)
   const closeModal = useCallback(() => {
+    if (preventClose) {
+      return // Solo preventClose puede bloquear el cierre por cancelación
+    }
     setIsClosing(true)
-  }, [])
+  }, [preventClose])
 
   const handleSave = useCallback(() => {
     if (onclick) {
       onclick()
     }
-    closeModal()
-  }, [onclick, closeModal])
+    // Solo cerrar si se puede cerrar (aplicar validación solo aquí)
+    if (canCloseOnSave()) {
+      setIsClosing(true)
+    }
+  }, [onclick, canCloseOnSave])
 
   const handleCancel = useCallback(() => {
     if (onCancel) {
       onCancel()
     }
-    closeModal()
+    closeModal() // Siempre cerrar en cancelar (no aplicar validación)
   }, [onCancel, closeModal])
 
   // Manejar el evento animationend para detectar cuando termina la animación de cierre
@@ -86,7 +105,7 @@ const Modal = memo(function Modal({
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        closeModal()
+        closeModal() // Escape siempre cierra (cancelación)
       }
     }
 
@@ -102,12 +121,12 @@ const Modal = memo(function Modal({
       document.removeEventListener("keydown", handleEsc)
       document.body.style.overflow = "unset"
     }
-  }, [isOpen, isClosing])
+  }, [isOpen, isClosing, closeModal])
 
   // Cerrar modal al hacer click fuera del contenido
   const handleOverlayClick = useCallback((e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      closeModal()
+      closeModal() // Click fuera siempre cierra (cancelación)
     }
   }, [closeModal])
 

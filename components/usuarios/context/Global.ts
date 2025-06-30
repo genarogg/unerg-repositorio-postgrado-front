@@ -3,14 +3,15 @@ import { devtools } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
 
 /* ===== TIPOS BÁSICOS ===== */
-type UserRole = "SUPER" | "ASISTENTE" | "EDITOR"
+type UserRole = "SUPER" | "EDITOR"
 type UserStatus = "ACTIVO" | "INACTIVO"
 
 /* ===== INTERFACES DE CONFIGURACIÓN ===== */
 interface RoleConfig {
   SUPER: "SUPER"
-  ASISTENTE: "ASISTENTE"
+
   EDITOR: "EDITOR"
+  
 }
 
 interface StatusConfig {
@@ -31,7 +32,7 @@ interface StatusBadge {
 
 interface RoleBadges {
   SUPER: RoleBadge
-  ASISTENTE: RoleBadge
+
   EDITOR: RoleBadge
 }
 
@@ -152,7 +153,7 @@ const useGlobalStatic = create<StaticGlobalProps>()(
 
       roles: {
         SUPER: "SUPER",
-        ASISTENTE: "ASISTENTE",
+      
         EDITOR: "EDITOR",
       } as RoleConfig,
 
@@ -164,7 +165,7 @@ const useGlobalStatic = create<StaticGlobalProps>()(
       badges: {
         roles: {
           SUPER: { name: "SUPER", color: "#ef4444" },
-          ASISTENTE: { name: "ASISTENTE", color: "#3b82f6" },
+         
           EDITOR: { name: "EDITOR", color: "#10b981" },
         },
         estados: {

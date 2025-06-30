@@ -14,7 +14,6 @@ interface ChangePasswordProps {
 
 // Interface para el formulario
 interface PasswordFormData {
-
   newPassword: string
   confirmPassword: string
 }
@@ -23,6 +22,7 @@ interface PasswordFormData {
 interface PasswordFormRef {
   handleSave: () => Promise<void>
   isLoading: boolean
+  validateForClose: () => boolean // Agregar esta línea
 }
 
 // Componente del formulario con forwardRef
@@ -38,7 +38,6 @@ const ChangePasswordForm = memo(
     const [errors, setErrors] = useState<Partial<PasswordFormData>>({})
 
     const [formData, setFormData] = useState<PasswordFormData>({
-  
       newPassword: "",
       confirmPassword: "",
     })
@@ -63,13 +62,16 @@ const ChangePasswordForm = memo(
     const validateForm = useCallback((): boolean => {
       const newErrors: Partial<PasswordFormData> = {}
 
-    
+      // Validar nueva contraseña
       if (!formData.newPassword) {
         newErrors.newPassword = "La nueva contraseña es requerida"
       } else if (formData.newPassword.length < 6) {
         newErrors.newPassword = "La contraseña debe tener al menos 6 caracteres"
+      } else if (formData.newPassword.length > 50) {
+        newErrors.newPassword = "La contraseña no puede tener más de 50 caracteres"
       }
 
+      // Validar confirmación de contraseña
       if (!formData.confirmPassword) {
         newErrors.confirmPassword = "Confirma la nueva contraseña"
       } else if (formData.newPassword !== formData.confirmPassword) {
@@ -80,6 +82,11 @@ const ChangePasswordForm = memo(
       return Object.keys(newErrors).length === 0
     }, [formData])
 
+    // Agregar esta función dentro del componente ChangePasswordForm, después de validateForm
+    const validateForClose = useCallback((): boolean => {
+      return validateForm()
+    }, [validateForm])
+
     const handleSave = useCallback(async () => {
       if (!validateForm()) {
         return
@@ -87,33 +94,58 @@ const ChangePasswordForm = memo(
 
       setIsLoading(true)
       try {
-        // Simular llamada a API
-        await new Promise((resolve) => setTimeout(resolve, 1500))
+        // Llamada a la API para cambiar la contraseña
+        const response = await fetch("http://localhost:4000/auth/change-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: item.id,
+            nuevaContrasena: formData.newPassword,
+          }),
+        })
 
-        // Aquí harías la llamada real a tu API para cambiar la contraseña
-        console.log(`Cambiando contraseña para usuario ${item.name} ${item.lastName}`)
+        const result = await response.json()
 
-        // Resetear formulario
+        if (!response.ok || result.type === "error") {
+          throw new Error(result.message || "Error al cambiar la contraseña")
+        }
+
+        console.log("Contraseña cambiada exitosamente:", result.message)
+
+        // Resetear formulario después del éxito
         setFormData({
-    
           newPassword: "",
           confirmPassword: "",
         })
-      } catch (error) {
+
+        // Limpiar errores
+        setErrors({})
+
+        // Opcional: Mostrar mensaje de éxito (puedes implementar un toast o notificación)
+        alert("Contraseña cambiada exitosamente")
+      } catch (error: any) {
         console.error("Error al cambiar contraseña:", error)
+
+        // Mostrar error específico del backend
+        setErrors({
+          newPassword: error.message || "Error al cambiar la contraseña. Inténtalo de nuevo.",
+        })
       } finally {
         setIsLoading(false)
       }
-    }, [formData, validateForm, item.name, item.lastName])
+    }, [formData, validateForm, item.id])
 
-    // Exponer funciones a través del ref
+    // Actualizar useImperativeHandle para incluir validateForClose
     useImperativeHandle(
       ref,
       () => ({
         handleSave,
         isLoading,
+        validateForClose, // Agregar esta línea
       }),
-      [handleSave, isLoading],
+      [handleSave, isLoading, validateForClose], // Agregar validateForClose a las dependencias
     )
 
     return (
@@ -124,8 +156,6 @@ const ChangePasswordForm = memo(
           </h3>
           <p style={{ margin: 0, color: "#6b7280", fontSize: "14px" }}>{item.email}</p>
         </div>
-
-
 
         <div style={{ marginBottom: "24px" }}>
           <Input
@@ -189,6 +219,14 @@ const ChangePasswordModal: React.FC<ChangePasswordProps> = memo(({ item }) => {
     }
   }, [])
 
+  // Agregar esta función dentro del componente ChangePasswordModal, después de handleSave
+  const handleValidateClose = useCallback(() => {
+    if (formRef.current) {
+      return formRef.current.validateForClose()
+    }
+    return true // Si no hay ref, permitir cerrar
+  }, [])
+
   const isLoading = formRef.current?.isLoading || false
 
   const modalProps = useMemo(
@@ -201,8 +239,9 @@ const ChangePasswordModal: React.FC<ChangePasswordProps> = memo(({ item }) => {
       cancel: true,
       cancelText: "Cancelar",
       lazy: true,
+      onValidateClose: handleValidateClose, // Agregar esta línea
     }),
-    [isLoading, handleSave],
+    [isLoading, handleSave, handleValidateClose], // Agregar handleValidateClose a las dependencias
   )
 
   const renderForm = useCallback(() => {
