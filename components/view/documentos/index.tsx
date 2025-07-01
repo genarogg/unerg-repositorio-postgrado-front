@@ -166,7 +166,7 @@ export default function DocumentosPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen ">
             <main className="main-content">
 
                 <div style ={{ marginBottom: "50px" }}>
