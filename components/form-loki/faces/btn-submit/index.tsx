@@ -151,7 +151,7 @@ const BtnSubmitBasic = ({
 
       const responseData = await response.json();
 
-      
+      console.log(responseData)
       
       // Manejar respuesta según el contexto
       if (constext === "login" || constext === "/login") {
