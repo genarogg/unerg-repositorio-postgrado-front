@@ -6,7 +6,7 @@ const PUBLIC_NEXT_ALGOLIA_ID = "L3RFZXXI90"
 const PUBLIC_NEXT_ALGOLIA_KEY = "9ce899f55f87d9fe3938c8eb5f08b44c"
 
 const BACKEND_DEV = "https://repositorio.unerg.tech"
-const BACKEND_PROD = "https://repositorio.unerg.tech/"
+const BACKEND_PROD = "https://repositorio.unerg.tech"
 
 const FRONTEND_DEV = "http://localhost:3000"
 const FRONTEND_PROD = "PROD"
