@@ -19,7 +19,7 @@ const Layout: React.FC<LayoutProps> = ({
     children,
     where = "",
     header,
-    footer
+    
 }) => {
 
     const { state: { loading } } = useAuth();
