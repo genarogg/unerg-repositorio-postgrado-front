@@ -3,25 +3,26 @@ import React from 'react'
 import { A } from "../../nano";
 import { Icon } from "../../ux";
 
+interface MenuItem {
+  href: string;
+  label?: string;
+  icon?: React.ReactNode;
+  onClick?: () => void; // Nueva función opcional por elemento
+}
+
 interface NavProps {
   className?: string;
-  menuItems: {
-    href: string;
-    label?: string;
-    icon?: React.ReactNode;
-  }[];
-  onClick?: () => void;
+  menuItems: MenuItem[];
+  onClick?: () => void; // Función global opcional
 }
 
 /* 
 como usar
 
-// Definir los elementos del header
-
 const menuItems = [
-  { href: "/", label: "Inicio", icon: <TiHome /> },
-  { href: "#servicios", label: "Servicios", icon: <FaLightbulb /> },
-  ...
+  { href: "/", label: "Inicio", icon: <TiHome />, onClick: () => alert("Inicio") },
+  { href: "#servicios", label: "Servicios", icon: <FaLightbulb />, onClick: () => alert("Servicios") },
+  // ...
 ];
 */
 
@@ -32,14 +33,18 @@ const Nav: React.FC<NavProps> = ({
 }) => {
   return (
     <div
-      className={`container-nav ${className} ${menuItems[0].icon ? "" : "sin-iconos"}`}
+      className={`container-nav ${className} ${menuItems[0]?.icon ? "" : "sin-iconos"}`}
     >
       <nav>
         <ul>
           {menuItems.map((item, index) => (
             <li
-              onClick={() => { onClick && onClick() }}
-              key={index}>
+              key={index}
+              onClick={() => {
+                if (item.onClick) item.onClick();
+                if (onClick) onClick();
+              }}
+            >
               <A href={item.href} >
                 {item.icon && (
                   <div className="container-icono">
@@ -48,7 +53,7 @@ const Nav: React.FC<NavProps> = ({
                 )}
 
                 {item.label && (
-                  <label htmlFor="">
+                  <label>
                     {item.label}
                   </label>
                 )}

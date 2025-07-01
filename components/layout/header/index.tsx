@@ -31,7 +31,12 @@ const Header: React.FC<HeaderProps> = () => {
 
     const menuItems = [
         { href: "/", label: "Inicio" },
+        { href: "/", label: "Salir", onClick: () => borrarToken() }
     ];
+
+    const borrarToken = () => {
+        localStorage.removeItem("auth_token");
+    }
 
     console.log("isAuthenticated", isAuthenticated);
 
@@ -42,15 +47,15 @@ const Header: React.FC<HeaderProps> = () => {
             { href: "/dashboard/lineas-de-investigacion", label: "lineas" },
 
             { href: "/dashboard/usuarios", label: "usuarios" },
-                { href: "/reportes", label: "reportes" },
-            { href: "/", label: "Salir" }
+            { href: "/reportes", label: "reportes" },
+
         );
     }
     else {
         menuItems.push(
 
             { href: "/documentos", label: "documentos" },
-        
+
             { href: "/login", label: "login" },
         );
     }
