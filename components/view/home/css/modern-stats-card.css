@@ -1,0 +1,149 @@
+.modern-stats-card {
+  border-radius: 20px;
+  padding: 1.5rem;
+  border: 1px solid;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.modern-stats-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.total-card {
+  color: white;
+}
+
+.category-card {
+  background: white;
+  color: #374151;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.circle-container {
+  position: relative;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+}
+
+.circle-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.wave-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.circle-number-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.circle-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 11;
+}
+
+.text-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.category-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.4;
+}
+
+.category-subtitle {
+  font-size: 0.875rem;
+  margin: 0 0 0.5rem 0;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.percentage-bar {
+  position: relative;
+  height: 6px;
+  background-color: #f3f4f6;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.percentage-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s ease;
+  position: relative;
+}
+
+.percentage-text {
+  position: absolute;
+  right: 0;
+  top: -20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .modern-stats-card {
+    padding: 1rem;
+  }
+
+  .card-content {
+    gap: 0.75rem;
+  }
+
+  .circle-container,
+  .circle-wrapper,
+  .wave-svg,
+  .circle-number-container {
+    width: 60px;
+    height: 60px;
+  }
+
+  .circle-number {
+    font-size: 1.25rem;
+  }
+
+  .category-title {
+    font-size: 1rem;
+  }
+
+  .category-subtitle {
+    font-size: 0.8rem;
+  }
+}
