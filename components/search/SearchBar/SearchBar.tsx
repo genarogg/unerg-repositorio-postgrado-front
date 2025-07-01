@@ -9,6 +9,9 @@ import { Badge } from "../ui/Badge/Badge"
 import { useDebounce } from "../hooks/useDebounce"
 import type { SearchItem, BackendSearchResponse } from "../lib/types"
 import "./searchBar.css"
+import Link from "next/link"
+
+
 
 interface SearchBarProps {
   placeholder?: string
@@ -153,7 +156,7 @@ export function SearchBar({
 
       const data: BackendSearchResponse = await response.json()
 
-      
+
       setResults(data.data.trabajos)
       setTotalResults(data.data.trabajos.length)
       setShowResults(true)
@@ -476,24 +479,28 @@ export function SearchBar({
                           }}
                           transition={{ duration: 0.3, delay: index * 0.08 }}
                         >
-                          <div className="result-content">
-                            <div className="result-title">{result.titulo}</div>
-                            <div className="result-author">
-                              Por: <strong>{result.autor}</strong>
+                          <Link href={`/documentos/${result.id}`} className="result-link">
+
+
+                            <div className="result-content">
+                              <div className="result-title">{result.titulo}</div>
+                              <div className="result-author">
+                                Por: <strong>{result.autor}</strong>
+                              </div>
+                              {result.resumen && <div className="result-description">{truncateText(result.resumen)}</div>}
+                              <div className="result-meta">
+                                {result.lineaDeInvestigacion && (
+                                  <Badge variant="secondary">{result.lineaDeInvestigacion.nombre}</Badge>
+                                )}
+                                <Badge variant={getEstadoBadgeVariant(result.estado)}>{result.estado}</Badge>
+                                {result.periodoAcademico && (
+                                  <Badge variant="secondary" size="sm">
+                                    {result.periodoAcademico.periodo}
+                                  </Badge>
+                                )}
+                              </div>
                             </div>
-                            {result.resumen && <div className="result-description">{truncateText(result.resumen)}</div>}
-                            <div className="result-meta">
-                              {result.lineaDeInvestigacion && (
-                                <Badge variant="secondary">{result.lineaDeInvestigacion.nombre}</Badge>
-                              )}
-                              <Badge variant={getEstadoBadgeVariant(result.estado)}>{result.estado}</Badge>
-                              {result.periodoAcademico && (
-                                <Badge variant="secondary" size="sm">
-                                  {result.periodoAcademico.periodo}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
+                          </Link>
                         </motion.li>
                       ))}
                     </ul>
