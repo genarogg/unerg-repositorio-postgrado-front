@@ -41,7 +41,7 @@ const useData = () => {
           const totalPages = Math.ceil(allItems.length / limit)
 
           setData({
-            items: paginatedItems.reverse(),
+            items: allItems.reverse(),
             totalItems: allItems.length,
             page,
             totalPages,

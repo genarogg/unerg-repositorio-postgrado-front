@@ -27,8 +27,16 @@ interface FormData {
 
 // Interface para el ref del formulario
 interface FormRef {
-  handleSave: () => Promise<void>
+  handleSave: () => Promise<boolean>
   isLoading: boolean
+  validateForm: () => boolean
+}
+
+// Interface para las respuestas del backend
+interface ApiResponse {
+  type: "success" | "error"
+  message: string
+  data?: any
 }
 
 // 🔥 OPTIMIZACIÓN CRÍTICA: Componente del formulario con forwardRef
@@ -45,6 +53,7 @@ const AggEditarForm = memo(
     const isEditMode = !!item
 
     const [isLoading, setIsLoading] = useState(false)
+    const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({})
 
     const [formData, setFormData] = useState<FormData>({
       nombre: "",
@@ -57,6 +66,7 @@ const AggEditarForm = memo(
         nombre: "",
         estado: "ACTIVO",
       })
+      setFormErrors({})
     }, [])
 
     // 🔥 OPTIMIZACIÓN CRÍTICA: useEffect con dependencias específicas
@@ -69,16 +79,25 @@ const AggEditarForm = memo(
         }
 
         setFormData(newFormData)
+        setFormErrors({})
       } else if (!isEditMode) {
         resetForm()
       }
     }, [item, isEditMode, resetForm])
 
     // 🔥 OPTIMIZACIÓN: Memoizar handlers
-    const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target
-      setFormData((prev) => ({ ...prev, [name]: value }))
-    }, [])
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setFormData((prev) => ({ ...prev, [name]: value }))
+
+        // Limpiar error del campo cuando el usuario empiece a escribir
+        if (formErrors[name]) {
+          setFormErrors((prev) => ({ ...prev, [name]: "" }))
+        }
+      },
+      [formErrors],
+    )
 
     const handleEstadoChange = useCallback((value: string | string[]) => {
       const stateValue = Array.isArray(value) ? value[0] : value
@@ -104,43 +123,138 @@ const AggEditarForm = memo(
       return maxId + 1
     }, [dataItems])
 
-    const handleSave = useCallback(async () => {
-      // Validación: el nombre es requerido
+    // Función para validar el formulario
+    const validateForm = useCallback((): boolean => {
+      const errors: { [key: string]: string } = {}
+
+      // Validar nombre
       if (!formData.nombre.trim()) {
-        console.error("El nombre es requerido")
-        return
+        errors.nombre = "El nombre es requerido"
+      } else if (formData.nombre.trim().length < 3) {
+        errors.nombre = "El nombre debe tener al menos 3 caracteres"
+      } else if (formData.nombre.trim().length > 100) {
+        errors.nombre = "El nombre no puede exceder 100 caracteres"
+      }
+
+      setFormErrors(errors)
+      return Object.keys(errors).length === 0
+    }, [formData])
+
+    // Función para hacer la petición al backend
+    const makeApiRequest = useCallback(async (url: string, data: any): Promise<ApiResponse> => {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+
+        const result: ApiResponse = await response.json()
+
+        if (!response.ok) {
+          throw new Error(result.message || "Error en la petición")
+        }
+
+        return result
+      } catch (error) {
+        console.error("Error en la petición:", error)
+        throw error
+      }
+    }, [])
+
+    const handleSave = useCallback(async (): Promise<boolean> => {
+      // Validar formulario
+      if (!validateForm()) {
+        alert("Por favor, corrige los errores en el formulario antes de continuar.")
+        return false
       }
 
       setIsLoading(true)
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
 
-        const itemData = {
-          nombre: formData.nombre.trim(),
-          estado: formData.estado,
+      try {
+        // Simular token (en una aplicación real, esto vendría del contexto de autenticación)
+        const token = localStorage.getItem("auth_token") || ""
+
+        if (!token) {
+          alert("Error: No se encontró el token de autenticación")
+          return false
         }
 
         if (isEditMode) {
-          if (!item?.id) throw new Error("No se puede actualizar: ID del item no encontrado")
-
-          // 🔥 USAR MÉTODO ESPECÍFICO: updateItem para edición
-          updateItem(item.id, itemData)
-        } else {
-          const newItem: DataItem = {
-            id: generateId(),
-            ...itemData,
+          if (!item?.id) {
+            alert("Error: No se puede actualizar, ID del item no encontrado")
+            return false
           }
 
-          // 🔥 USAR MÉTODO ESPECÍFICO: setData con preservación de selecciones
-          const updatedItems = [newItem, ...dataItems]
-          setData({ items: updatedItems })
+          // Petición para actualizar
+          const updateData = {
+            token,
+            id: item.id,
+            nombre: formData.nombre.trim(),
+            estado: formData.estado === "ACTIVO",
+          }
+
+          console.log("Datos de actualización:", updateData)
+
+          const result = await makeApiRequest("http://localhost:4000/lineas-de-investigacion/update", updateData)
+
+          if (result.type === "success") {
+            // Actualizar en el estado local
+            updateItem(item.id, {
+              nombre: formData.nombre.trim(),
+              estado: formData.estado,
+            })
+
+            alert("Línea de investigación actualizada exitosamente")
+            return true
+          } else {
+            alert(`Error al actualizar: ${result.message}`)
+            return false
+          }
+        } else {
+          // Petición para crear
+          const createData = {
+            token,
+            nombre: formData.nombre.trim(),
+          }
+
+          const result = await makeApiRequest("http://localhost:4000/lineas-de-investigacion/create", createData)
+
+          if (result.type === "success") {
+            // Agregar al estado local con los datos devueltos por el backend
+            const newItem: DataItem = {
+              id: result.data?.id || generateId(),
+              nombre: result.data?.nombre || formData.nombre.trim(),
+              estado: result.data?.estado ? "ACTIVO" : "INACTIVO",
+              // Campos opcionales para compatibilidad
+              correo: "",
+              telefono: "",
+              cedula: "",
+              rol: "EDITOR",
+              limite: 0,
+              doc: "",
+            }
+
+            const updatedItems = [newItem, ...dataItems]
+            setData({ items: updatedItems })
+
+            alert("Línea de investigación creada exitosamente")
+            return true
+          } else {
+            alert(`Error al crear: ${result.message}`)
+            return false
+          }
         }
-      } catch (error) {
-        console.error(`Error al ${isEditMode ? "actualizar" : "agregar"} item:`, error)
+      } catch (error: any) {
+        console.error(`Error al ${isEditMode ? "actualizar" : "crear"} línea de investigación:`, error)
+        alert(`Error al ${isEditMode ? "actualizar" : "crear"} la línea de investigación: ${error.message}`)
+        return false
       } finally {
         setIsLoading(false)
       }
-    }, [formData, isEditMode, item?.id, updateItem, setData, generateId, dataItems])
+    }, [formData, isEditMode, item?.id, updateItem, setData, generateId, dataItems, validateForm, makeApiRequest])
 
     // 🔥 NUEVO: Exponer funciones a través del ref
     useImperativeHandle(
@@ -148,8 +262,9 @@ const AggEditarForm = memo(
       () => ({
         handleSave,
         isLoading,
+        validateForm,
       }),
-      [handleSave, isLoading],
+      [handleSave, isLoading, validateForm],
     )
 
     return (
@@ -165,6 +280,7 @@ const AggEditarForm = memo(
             disabled={isLoading}
             icon={<User size={16} />}
             hasContentState={true}
+            error={formErrors.nombre}
           />
         </div>
 
@@ -211,11 +327,20 @@ const AggEditar: React.FC<AggEditarProps> = memo(({ item }) => {
   const isEditMode = !!item
   const formRef = useRef<FormRef>(null)
 
-  // 🔥 SOLUCIONADO: handleSave ahora conecta con el formulario
+  // 🔥 SOLUCIONADO: handleSave ahora conecta con el formulario y valida antes de cerrar
   const handleSave = useCallback(async () => {
     if (formRef.current) {
-      await formRef.current.handleSave()
+      return await formRef.current.handleSave()
     }
+    return false
+  }, [])
+
+  // 🔥 NUEVA: Función de validación para el modal
+  const onValidateClose = useCallback((): boolean => {
+    if (formRef.current) {
+      return formRef.current.validateForm()
+    }
+    return true
   }, [])
 
   // 🔥 OPTIMIZACIÓN: Obtener isLoading del formulario
@@ -237,8 +362,9 @@ const AggEditar: React.FC<AggEditarProps> = memo(({ item }) => {
       onclick: handleSave,
       cancel: isEditMode,
       lazy: true, // 🔥 CRÍTICO: Activar lazy loading
+      onValidateClose, // 🔥 NUEVA: Función de validación antes de cerrar
     }),
-    [isEditMode, isLoading, handleSave],
+    [isEditMode, isLoading, handleSave, onValidateClose],
   )
 
   // 🔥 OPTIMIZACIÓN CRÍTICA: Renderizar el formulario como función lazy

@@ -1,0 +1,465 @@
+.input-list-container {
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-list-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.input-list-input-section {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.input-list-input-wrapper {
+  flex: 1;
+}
+
+.input-list-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background-color: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.input-list-add-btn:hover:not(:disabled) {
+  background-color: #4b5563;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-list-add-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.input-list-add-btn:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.input-list-add-btn.adding {
+  background-color: #3b82f6;
+  animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.input-list-items-section {
+  min-height: 40px;
+}
+
+.input-list-items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.active-count {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.input-list-limit {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #374151;
+}
+
+.input-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  animation: slideIn 0.3s ease-out;
+  min-height: 44px; /* Fixed height to prevent jumping */
+}
+
+.input-list-item.inactive {
+  background: #f1f5f9;
+  border-color: #d1d5db;
+  opacity: 0.7;
+}
+
+.input-list-item:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.input-list-item.inactive:hover {
+  background: #e2e8f0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.input-list-item-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 28px; /* Consistent height for content */
+}
+
+.input-list-item-text {
+  flex: 1;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+}
+
+.input-list-item.inactive .input-list-item-text {
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.input-list-item-text.editable {
+  cursor: pointer;
+}
+
+.input-list-item-text.editable:hover {
+  background: #e2e8f0;
+  color: #1f2937;
+}
+
+.input-list-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Checkbox styles */
+.input-list-checkbox-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.input-list-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.input-list-checkbox-checkmark {
+  height: 18px;
+  width: 18px;
+  background-color: #ffffff;
+  border: 2px solid #d1d5db;
+  border-radius: 3px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.input-list-checkbox-container:hover .input-list-checkbox-checkmark {
+  border-color: #10b981;
+}
+
+.input-list-checkbox:checked ~ .input-list-checkbox-checkmark {
+  background-color: #10b981;
+  border-color: #10b981;
+}
+
+.input-list-checkbox-checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.input-list-checkbox:checked ~ .input-list-checkbox-checkmark:after {
+  display: block;
+}
+
+.input-list-edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  color: #6b7280;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.input-list-edit-btn:hover:not(:disabled) {
+  background: #e0f2fe;
+  color: #0369a1;
+  transform: scale(1.1);
+}
+
+.input-list-edit-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.input-list-remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  color: #9ca3af;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.input-list-remove-btn:hover:not(:disabled) {
+  background: #fef2f2;
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+.input-list-remove-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.input-list-remove-btn:disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* Edit mode styles */
+.input-list-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.input-list-edit-input {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  background: #ffffff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  height: 28px; /* Fixed height to match text height */
+}
+
+.input-list-edit-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.input-list-save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.input-list-save-btn:hover:not(:disabled) {
+  background: #059669;
+  transform: scale(1.1);
+}
+
+.input-list-save-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.input-list-save-btn:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+
+.input-list-empty {
+  padding: 20px 16px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+  font-style: italic;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 6px;
+}
+
+.input-list-warning {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  color: #92400e;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .input-list-container {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .input-list-input-section {
+    gap: 6px;
+  }
+
+  .input-list-add-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .input-list-item {
+    padding: 6px 10px;
+  }
+
+  .input-list-item-text {
+    font-size: 13px;
+  }
+
+  .input-list-edit-btn,
+  .input-list-remove-btn,
+  .input-list-save-btn {
+    width: 20px;
+    height: 20px;
+  }
+
+  .input-list-checkbox-checkmark {
+    height: 16px;
+    width: 16px;
+  }
+
+  .input-list-edit-input {
+    font-size: 13px;
+    padding: 3px 6px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input-list-container {
+    padding: 10px;
+  }
+
+  .input-list-title {
+    font-size: 13px;
+  }
+
+  .input-list-input-section {
+    gap: 4px;
+  }
+
+  .input-list-add-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+
+  .input-list-items-header {
+    font-size: 11px;
+  }
+
+  .input-list-item {
+    padding: 6px 8px;
+  }
+
+  .input-list-item-text {
+    font-size: 12px;
+  }
+
+  .input-list-edit-input {
+    font-size: 12px;
+    height: 22px;
+  }
+
+  .input-list-empty {
+    padding: 16px 12px;
+    font-size: 12px;
+  }
+}

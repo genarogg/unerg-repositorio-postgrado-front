@@ -28,7 +28,7 @@ const Modal = memo(function Modal({
   buttonClassName, 
   buttonText = "Guardar", 
   onclick,
-  maxWidth = "500px",
+  maxWidth = "425px",
   cancel = false,
   onCancel,
   cancelText = "Cancelar",

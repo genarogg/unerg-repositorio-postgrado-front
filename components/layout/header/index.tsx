@@ -1,7 +1,7 @@
 import React from "react";
 import "../sass/header.scss";
 
-import  BtnFreya  from "../../ux/btns/btn-freya";
+import BtnFreya from "../../ux/btns/btn-freya";
 
 import Title from "./Title";
 import SideBar from "./sidebar";
@@ -37,16 +37,17 @@ const Header: React.FC<HeaderProps> = () => {
 
     if (isAuthenticated) {
         menuItems.push(
-    
-    { href: "/dashboard/trabajos", label: "trabajos" },
+
+            { href: "/dashboard/trabajos", label: "trabajos" },
+            { href: "/dashboard/lineas-de-investigacion", label: "lineas" },
             { href: "/dashboard/usuarios", label: "usuarios" },
             { href: "/", label: "Salir" }
         );
     }
     else {
         menuItems.push(
-           
-            
+
+
             { href: "/login", label: "login" },
         );
     }

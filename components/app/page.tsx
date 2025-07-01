@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import UsuarioTabla from '../usuarios'
+import UsuarioTabla from '../trabajos'
 
 interface exampleV0Props {
 
