@@ -4,11 +4,9 @@ import TrabajosTabla from '../../../components/trabajos'
 import Layout from "../../../components/layout";
 import "./index.css"
 
-interface usuariosProps {
 
-}
 
-const usuarios: React.FC<usuariosProps> = () => {
+const usuarios = () => {
     return (
         <Layout where='usuarios'>
             <TrabajosTabla />

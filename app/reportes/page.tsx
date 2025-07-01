@@ -3,11 +3,9 @@ import React from 'react'
 import Layout from "../../components/layout";
 import Reportes from "../../components/reportes"
 
-interface reportesProps {
 
-}
 
-const reportes: React.FC<reportesProps> = () => {
+const reportes = () => {
     return (
         <Layout>
             <Reportes />

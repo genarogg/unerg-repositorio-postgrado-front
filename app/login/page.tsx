@@ -4,11 +4,9 @@ import FormLoki from "../../components/form-loki"
 import Layout from "../../components/layout";
 import "./login.css";
 
-interface loginProps {
 
-}
 
-const login: React.FC<loginProps> = () => {
+const login = () => {
     return (
         <Layout where="login">
             <FormLoki />

@@ -3,11 +3,9 @@ import React from 'react'
 import Layout from "../../components/layout";
 
 import Documentos from "../../components/view/documentos"
-interface documentosProps {
 
-}
 
-const documentos: React.FC<documentosProps> = () => {
+const documentos = () => {
     return (
         <Layout>
             <Documentos />
