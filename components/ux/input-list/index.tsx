@@ -22,6 +22,7 @@ interface InputListProps {
   className?: string
   allowEdit?: boolean
   showActiveToggle?: boolean
+  allowDelete?: boolean
 }
 
 const InputList: React.FC<InputListProps> = ({
@@ -35,6 +36,7 @@ const InputList: React.FC<InputListProps> = ({
   className = "",
   allowEdit = true,
   showActiveToggle = true,
+  allowDelete = true,
 }) => {
   const [inputValue, setInputValue] = useState("")
   const [isAdding, setIsAdding] = useState(false)
@@ -287,14 +289,15 @@ const InputList: React.FC<InputListProps> = ({
                       </button>
                     )}
 
-                    <button
-                      className="input-list-remove-btn"
-                      onClick={() => handleRemoveItem(index)}
-                      disabled={disabled}
-                      title="Eliminar elemento"
-                    >
-                      <X size={14} />
-                    </button>
+                    {allowDelete && !disabled && (
+                      <button
+                        className="input-list-remove-btn"
+                        onClick={() => handleRemoveItem(index)}
+                        disabled={disabled}
+                        title="Eliminar elemento"
+                      >
+                        <X size={14} />
+                      </button>)}
                   </div>
                 </div>
               ))}

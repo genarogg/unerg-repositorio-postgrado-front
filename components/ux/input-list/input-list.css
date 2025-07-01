@@ -19,8 +19,15 @@
 .input-list-input-section {
   display: flex;
   gap: 8px;
-  align-items: flex-end;
+  align-items: center;
   margin-bottom: 16px;
+  align-content: center;
+  justify-content: flex-start;
+}
+
+.input-list-input-section .container-input{
+  max-width: 290px;
+      min-width: 290px;
 }
 
 .input-list-input-wrapper {
