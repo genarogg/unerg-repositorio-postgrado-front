@@ -21,7 +21,7 @@ const setConfigured = ({ rolUser, roles }: any) => {
       { name: "edit", type: "btn" },
       { name: "view", type: "btn" },
     ],
-    headerFilter: ["periodoAcademico", "lineaDeInvestigacion"],
+    headerFilter: [],
     headerActions: [],
     footerActions: [],
   }
