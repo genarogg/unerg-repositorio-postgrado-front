@@ -40,7 +40,9 @@ const Header: React.FC<HeaderProps> = () => {
 
             { href: "/dashboard/trabajos", label: "trabajos" },
             { href: "/dashboard/lineas-de-investigacion", label: "lineas" },
+
             { href: "/dashboard/usuarios", label: "usuarios" },
+                { href: "/reportes", label: "reportes" },
             { href: "/", label: "Salir" }
         );
     }
@@ -48,6 +50,7 @@ const Header: React.FC<HeaderProps> = () => {
         menuItems.push(
 
             { href: "/documentos", label: "documentos" },
+        
             { href: "/login", label: "login" },
         );
     }
