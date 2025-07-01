@@ -171,7 +171,7 @@ export function SearchBar({
       }
 
       console.error("❌ Error en búsqueda:", error)
-.result-content
+
       if (error instanceof Error) {
         setSearchError(error.message)
       } else {
