@@ -95,7 +95,7 @@ const ChangePasswordForm = memo(
       setIsLoading(true)
       try {
         // Llamada a la API para cambiar la contraseña
-        const response = await fetch("http://localhost:4000/auth/change-password", {
+        const response = await fetch("https://repositorio.unerg.tech/auth/change-password", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -133,7 +133,7 @@ const AggEditarForm = memo(
     const fetchLineasDeInvestigacion = useCallback(async () => {
       setLoadingLineas(true)
       try {
-        const response = await fetch('http://localhost:4000/lineas-de-investigacion/get-all')
+        const response = await fetch('https://repositorio.unerg.tech/lineas-de-investigacion/get-all')
         if (!response.ok) {
           throw new Error('Error al obtener líneas de investigación')
         }
@@ -167,7 +167,7 @@ const AggEditarForm = memo(
     const fetchPeriodosAcademicos = useCallback(async () => {
       setLoadingPeriodos(true)
       try {
-        const response = await fetch('http://localhost:4000/periodo/get-all')
+        const response = await fetch('https://repositorio.unerg.tech/periodo/get-all')
         if (!response.ok) {
           throw new Error('Error al obtener períodos académicos')
         }
@@ -375,7 +375,7 @@ const AggEditarForm = memo(
             pdfBase64: pdfBase64Content ? `[BASE64_CONTENT_${pdfBase64Content.length}_CHARS]` : 'Sin cambios'
           })
 
-          const response = await fetch(`http://localhost:4000/trabajos/update/${item.id}`, {
+          const response = await fetch(`https://repositorio.unerg.tech/trabajos/update/${item.id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -434,7 +434,7 @@ const AggEditarForm = memo(
             pdfBase64: pdfBase64Content ? `[BASE64_CONTENT_${pdfBase64Content.length}_CHARS]` : 'No content'
           })
 
-          const response = await fetch("http://localhost:4000/trabajos/create", {
+          const response = await fetch("https://repositorio.unerg.tech/trabajos/create", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

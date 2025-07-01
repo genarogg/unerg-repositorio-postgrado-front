@@ -35,7 +35,7 @@ export function SearchBar({
   typingSpeed = 100,
   typingDelay = 2000,
   debounceTime = 1000, // Reducido a 1 segundo para mejor UX
-  apiUrl = "http://localhost:4000/search/main",
+  apiUrl = "https://repositorio.unerg.tech/search/main",
 }: SearchBarProps) {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<SearchItem[]>([])

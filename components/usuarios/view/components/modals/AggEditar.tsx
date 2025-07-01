@@ -464,7 +464,7 @@ const AggEditarForm = memo(
 
     // Función para registrar usuario en el backend
     const registerUserInBackend = useCallback(async (userData: FormData): Promise<DataItem> => {
-      const API_URL = "http://localhost:4000/auth/register"
+      const API_URL = "https://repositorio.unerg.tech/auth/register"
 
       const requestBody = {
         name: userData.name.trim(),
@@ -513,7 +513,7 @@ const AggEditarForm = memo(
 
     // Función para actualizar usuario en el backend
     const updateUserInBackend = useCallback(async (userData: FormData, userId: number): Promise<DataItem> => {
-      const API_URL = "http://localhost:4000/auth/update-user"
+      const API_URL = "https://repositorio.unerg.tech/auth/update-user"
 
       const requestBody = {
         id: userId,

@@ -59,7 +59,7 @@ export default function DocumentosPage() {
     const fetchTrabajos = async () => {
         try {
             setLoading(true)
-            const response = await fetch("http://localhost:4000/trabajos/get-all")
+            const response = await fetch("https://repositorio.unerg.tech/trabajos/get-all")
 
             if (!response.ok) {
                 throw new Error(`Error ${response.status}: ${response.statusText}`)

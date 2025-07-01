@@ -167,7 +167,7 @@ const ActionsCell = memo(({ item }: any) => {
         }
 
         // Hacer petición al backend
-        const result = await makeApiRequest("http://localhost:4000/lineas-de-investigacion/update", updateData)
+        const result = await makeApiRequest("https://repositorio.unerg.tech/lineas-de-investigacion/update", updateData)
 
         if (result.type === "success") {
           // Solo actualizar el estado local si la petición fue exitosa

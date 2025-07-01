@@ -5,7 +5,7 @@ const DEBUG = false
 const PUBLIC_NEXT_ALGOLIA_ID = "L3RFZXXI90"
 const PUBLIC_NEXT_ALGOLIA_KEY = "9ce899f55f87d9fe3938c8eb5f08b44c"
 
-const BACKEND_DEV = "http://localhost:4000"
+const BACKEND_DEV = "https://repositorio.unerg.tech"
 const BACKEND_PROD = "PROD"
 
 const FRONTEND_DEV = "http://localhost:3000"
