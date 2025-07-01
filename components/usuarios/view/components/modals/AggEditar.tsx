@@ -788,7 +788,7 @@ const AggEditarForm = memo(
         <div style={{ marginBottom: "42px" }}>
           <Input
             name="cedula"
-            type="text"
+            type="number"
             placeholder="Cédula (7-8 dígitos)"
             required
             onChange={handleChange}

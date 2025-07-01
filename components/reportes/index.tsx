@@ -5,6 +5,8 @@ import { CheckboxGroup } from "../ux"
 import { Database, BookOpen, FileText, Calendar, AlertCircle, Loader2 } from "lucide-react"
 import "./reportes.css"
 
+import decodeBase64Pdf from "./decodeBase64Pdf"
+
 // Tipos para la configuración del reporte
 interface ReportConfig {
   name: string
@@ -55,6 +57,16 @@ interface ReportePayload {
 }
 
 // Tipo para la respuesta del reporte
+// interface ReporteResponse {
+//   type: string
+//   message: string
+//   data?: {
+//     reporteUrl?: string
+//     reporteId?: string
+//     estadisticas?: any
+//   }
+// }
+
 interface ReporteResponse {
   type: string
   message: string
@@ -62,6 +74,7 @@ interface ReporteResponse {
     reporteUrl?: string
     reporteId?: string
     estadisticas?: any
+    pdfBase64?: string  // Agregar esta propiedad si el PDF viene aquí
   }
 }
 
@@ -199,8 +212,20 @@ const ConfiguracionReporte: React.FC = () => {
 
       const data: ReporteResponse = await response.json()
 
-      if (data.type !== "success") {
-        throw new Error(data.message || "Error al generar el reporte")
+      // Verificar las diferentes posibilidades donde puede estar el PDF
+      if (data.data) {
+        if (typeof data.data === 'string') {
+          // Si data es directamente el string base64
+          decodeBase64Pdf(data.data, "Reporte.pdf");
+        } else if (data.data.pdfBase64) {
+          // Si está en la propiedad pdfBase64
+          decodeBase64Pdf(data.data.pdfBase64, "Reporte.pdf");
+        } else if (data.data.reporteUrl) {
+          // Si está en reporteUrl
+          decodeBase64Pdf(data.data.reporteUrl, "Reporte.pdf");
+        } else {
+          console.warn("No se encontró el PDF en base64 en la respuesta:", data);
+        }
       }
 
       return data
@@ -452,8 +477,8 @@ Ver consola para más detalles.`)
             }
           >
             <Database size={20} />
-            {loadingReporte ? "Generando reporte..." : 
-             loadingLineas || loadingPeriodos ? "Cargando..." : "Generar Reporte"}
+            {loadingReporte ? "Generando reporte..." :
+              loadingLineas || loadingPeriodos ? "Cargando..." : "Generar Reporte"}
           </button>
         </div>
       </div>
