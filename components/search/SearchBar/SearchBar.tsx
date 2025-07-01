@@ -7,7 +7,7 @@ import { SearchIcon, LoaderIcon, X, Sparkles } from "../ui/Icons/Icons"
 import { Input } from "../ui/Input/Input"
 import { Badge } from "../ui/Badge/Badge"
 import { useDebounce } from "../hooks/useDebounce"
-import type { SearchItem } from "../lib/types"
+import type { SearchItem, BackendSearchResponse } from "../lib/types"
 import "./searchBar.css"
 
 interface SearchBarProps {
@@ -16,6 +16,7 @@ interface SearchBarProps {
   typingSpeed?: number
   typingDelay?: number
   debounceTime?: number
+  apiUrl?: string
 }
 
 export function SearchBar({
@@ -30,7 +31,8 @@ export function SearchBar({
   ],
   typingSpeed = 100,
   typingDelay = 2000,
-  debounceTime = 2000,
+  debounceTime = 1000, // Reducido a 1 segundo para mejor UX
+  apiUrl = "http://localhost:4000/search/main",
 }: SearchBarProps) {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState<SearchItem[]>([])
@@ -40,13 +42,16 @@ export function SearchBar({
   const [typingPlaceholder, setTypingPlaceholder] = useState("")
   const [isTyping, setIsTyping] = useState(true)
   const [isFocused, setIsFocused] = useState(false)
+  const [searchError, setSearchError] = useState<string | null>(null)
+  const [totalResults, setTotalResults] = useState(0)
 
   // Properly typed refs
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const abortControllerRef = useRef<AbortController | null>(null)
 
-  // Aplicar debounce al query para esperar 2 segundos antes de buscar
+  // Aplicar debounce al query
   const debouncedQuery = useDebounce(query, debounceTime)
 
   // Seleccionar un placeholder aleatorio al cargar
@@ -99,9 +104,16 @@ export function SearchBar({
   // Handle query changes
   const handleQueryChange = (newQuery: string) => {
     setQuery(newQuery)
+    setSearchError(null)
+
     if (!newQuery.trim()) {
       setResults([])
       setShowResults(false)
+      setTotalResults(0)
+      // Cancelar búsqueda en curso si existe
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
     }
   }
 
@@ -109,259 +121,88 @@ export function SearchBar({
     if (!searchQuery.trim()) {
       setResults([])
       setShowResults(false)
+      setTotalResults(0)
       return
     }
 
+    // Cancelar búsqueda anterior si existe
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    // Crear nuevo AbortController para esta búsqueda
+    abortControllerRef.current = new AbortController()
+
     setIsLoadingResults(true)
+    setSearchError(null)
 
     try {
-      // const response = await fetch(`/api/search?query=${encodeURIComponent(searchQuery)}`)
+      const response = await fetch(`${apiUrl}?query=${encodeURIComponent(searchQuery)}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        signal: abortControllerRef.current.signal,
+      })
 
-      // if (!response.ok) throw new Error("Error searching")
-      //   const data = await response.json()
+      console.log(response)
 
-      const data = [
-        {
-          "id": "26",
-          "title": "Auditoría Forense en Casos de Corrupción",
-          "carrera": "Contaduría Pública",
-          "tipo": "Investigación",
-          "autor": {
-            "nombre": "Lucía Ramírez",
-            "cedula": "67890012",
-            "correo": "lucia.ramirez@email.com"
-          }
-        },
-        {
-          "id": "64",
-          "title": "Auditoría de Sistemas de Información",
-          "carrera": "Contaduría Pública",
-          "tipo": "Proyecto de Grado",
-          "autor": {
-            "nombre": "Pablo Rincón",
-            "cedula": "45670890",
-            "correo": "pablo.rincon@email.com"
-          }
-        },
-        {
-          "id": "16",
-          "title": "Neuropsicología del Aprendizaje en Niños",
-          "carrera": "Psicología",
-          "tipo": "Monografía",
-          "autor": {
-            "nombre": "Valentina Jiménez",
-            "cedula": "67890012",
-            "correo": "valentina.jimenez@email.com"
-          }
-        },
-        {
-          "id": "17",
-          "title": "Psicología Positiva en el Ambiente Laboral",
-          "carrera": "Psicología",
-          "tipo": "Proyecto de Grado",
-          "autor": {
-            "nombre": "Alejandro Ramos",
-            "cedula": "78900123",
-            "correo": "alejandro.ramos@email.com"
-          }
-        },
-        {
-          "id": "30",
-          "title": "Enfermería Comunitaria en Zonas Rurales",
-          "carrera": "Enfermería",
-          "tipo": "Investigación",
-          "autor": {
-            "nombre": "Diana Paredes",
-            "cedula": "01230456",
-            "correo": "diana.paredes@email.com"
-          }
-        },
-        {
-          "id": "38",
-          "title": "Cardiología Preventiva en Jóvenes Deportistas",
-          "carrera": "Medicina",
-          "tipo": "Tesis",
-          "autor": {
-            "nombre": "Eduardo Salazar",
-            "cedula": "89010234",
-            "correo": "eduardo.salazar@email.com"
-          }
-        },
-        {
-          "id": "45",
-          "title": "Emprendimiento Social y Economía Circular",
-          "carrera": "Administración de Empresas",
-          "tipo": "Proyecto de Grado",
-          "autor": {
-            "nombre": "Manuela Cortés",
-            "cedula": "56780901",
-            "correo": "manuela.cortes@email.com"
-          }
-        },
-        {
-          "id": "50",
-          "title": "Enfermería en Cuidados Intensivos Neonatales",
-          "carrera": "Enfermería",
-          "tipo": "Tesis",
-          "autor": {
-            "nombre": "Óscar Duarte",
-            "cedula": "01230456",
-            "correo": "oscar.duarte@email.com"
-          }
-        },
-        {
-          "id": "58",
-          "title": "Oncología Pediátrica y Calidad de Vida",
-          "carrera": "Medicina",
-          "tipo": "Tesis",
-          "autor": {
-            "nombre": "Jaime Castañeda",
-            "cedula": "89010234",
-            "correo": "jaime.castaneda@email.com"
-          }
-        },
-        {
-          "id": "61",
-          "title": "Psicología del Deporte en Atletas de Alto Rendimiento",
-          "carrera": "Psicología",
-          "tipo": "Tesis",
-          "autor": {
-            "nombre": "Mónica Herrera",
-            "cedula": "12340567",
-            "correo": "monica.herrera@email.com"
-          }
-        },
-        {
-          "id": "65",
-          "title": "Enfermería Geriátrica y Envejecimiento Activo",
-          "carrera": "Enfermería",
-          "tipo": "Monografía",
-          "autor": {
-            "nombre": "Quira Mendoza",
-            "cedula": "56780901",
-            "correo": "quira.mendoza@email.com"
-          }
-        },
-        {
-          "id": "2",
-          "title": "Aplicación Móvil para Control de Inventarios",
-          "carrera": "Ingeniería de Sistemas",
-          "tipo": "Proyecto de Grado",
-          "autor": {
-            "nombre": "Ana García",
-            "cedula": "23456789",
-            "correo": "ana.garcia@email.com"
-          }
-        },
-        {
-          "id": "12",
-          "title": "Análisis del Derecho Laboral en el Teletrabajo",
-          "carrera": "Derecho",
-          "tipo": "Ensayo",
-          "autor": {
-            "nombre": "Gabriela Moreno",
-            "cedula": "23450678",
-            "correo": "gabriela.moreno@email.com"
-          }
-        },
-        {
-          "id": "20",
-          "title": "Análisis Financiero de Empresas Familiares",
-          "carrera": "Administración de Empresas",
-          "tipo": "Investigación",
-          "autor": {
-            "nombre": "Camila Vega",
-            "cedula": "01230456",
-            "correo": "camila.vega@email.com"
-          }
-        },
-        {
-          "id": "23",
-          "title": "Arquitectura Bioclimática en Zonas Tropicales",
-          "carrera": "Arquitectura",
-          "tipo": "Proyecto de Grado",
-          "autor": {
-            "nombre": "Julián Sánchez",
-            "cedula": "34560789",
-            "correo": "julian.sanchez@email.com"
-          }
-        },
-        {
-          "id": "31",
-          "title": "Análisis Sísmico de Estructuras de Concreto",
-          "carrera": "Ingeniería Civil",
-          "tipo": "Tesis",
-          "autor": {
-            "nombre": "Felipe Navarro",
-            "cedula": "12340567",
-            "correo": "felipe.navarro@email.com"
-          }
-        },
-        {
-          "id": "46",
-          "title": "Arquitectura Paramétrica y Fabricación Digital",
-          "carrera": "Arquitectura",
-          "tipo": "Tesis",
-          "autor": {
-            "nombre": "Emilio Vargas",
-            "cedula": "67890012",
-            "correo": "emilio.vargas@email.com"
-          }
-        },
-        {
-          "id": "63",
-          "title": "Arquitectura Vernácula y Identidad Cultural",
-          "carrera": "Arquitectura",
-          "tipo": "Monografía",
-          "autor": {
-            "nombre": "Olga Pedraza",
-            "cedula": "34560789",
-            "correo": "olga.pedraza@email.com"
-          }
-        },
-        {
-          "id": "ext-3",
-          "title": "Arquitectura Regenerativa y Biomimética",
-          "carrera": "Arquitectura",
-          "tipo": "Proyecto de Grado",
-          "autor": {
-            "nombre": "Tomás Futuro",
-            "cedula": "77777777",
-            "correo": "tomas.futuro@email.com"
-          }
-        },
-        {
-          "id": "1",
-          "title": "Sistema de Gestión Académica para Universidades",
-          "carrera": "Ingeniería de Sistemas",
-          "tipo": "Tesis",
-          "autor": {
-            "nombre": "Carlos Rodríguez",
-            "cedula": "12345678",
-            "correo": "carlos.rodriguez@email.com"
-          }
-        }
-      ]
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`)
+      }
 
-      setResults(data)
+      const data: BackendSearchResponse = await response.json()
+
+      
+      setResults(data.data.trabajos)
+      setTotalResults(data.data.trabajos.length)
       setShowResults(true)
+
+      console.log("✅ Búsqueda exitosa:", {
+        query: searchQuery,
+        results: data.data.trabajos.length,
+        message: data.message,
+      })
     } catch (error) {
-      console.error("Error searching:", error)
+      // No mostrar error si la búsqueda fue cancelada
+      if (error instanceof Error && error.name === "AbortError") {
+        console.log("🚫 Búsqueda cancelada")
+        return
+      }
+
+      console.error("❌ Error en búsqueda:", error)
+.result-content
+      if (error instanceof Error) {
+        setSearchError(error.message)
+      } else {
+        setSearchError("Error desconocido en la búsqueda")
+      }
+
       setResults([])
-      setShowResults(false)
+      setShowResults(true) // Mostrar panel para mostrar el error
+      setTotalResults(0)
     } finally {
       setIsLoadingResults(false)
     }
   }
 
   function handleResultClick(result: SearchItem) {
-    console.log("Result clicked:", result)
+    console.log("Trabajo seleccionado:", result)
+    // Aquí puedes agregar la lógica para navegar al detalle del trabajo
+    // Por ejemplo: router.push(`/trabajos/${result.id}`)
   }
 
   function handleClear() {
     setQuery("")
     setResults([])
     setShowResults(false)
+    setSearchError(null)
+    setTotalResults(0)
+
+    // Cancelar búsqueda en curso si existe
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
   }
 
   // Efecto para realizar la búsqueda cuando el query con debounce cambia
@@ -371,8 +212,19 @@ export function SearchBar({
     } else {
       setResults([])
       setShowResults(false)
+      setSearchError(null)
+      setTotalResults(0)
     }
   }, [debouncedQuery])
+
+  // Cleanup al desmontar el componente
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
+  }, [])
 
   // Prevenir el envío del formulario ya que ahora la búsqueda es automática
   const handleSubmit = (e: React.FormEvent) => {
@@ -415,8 +267,28 @@ export function SearchBar({
 
   const handleInputFocus = () => {
     setIsFocused(true)
-    if (query.trim() && results.length > 0) {
+    if (query.trim() && (results.length > 0 || searchError)) {
       setShowResults(true)
+    }
+  }
+
+  // Función para truncar texto
+  const truncateText = (text: string, maxLength = 150) => {
+    if (text.length <= maxLength) return text
+    return text.substring(0, maxLength) + "..."
+  }
+
+  // Función para obtener el color del badge según el estado
+  const getEstadoBadgeVariant = (estado: string) => {
+    switch (estado) {
+      case "VALIDADO":
+        return "success"
+      case "PENDIENTE":
+        return "warning"
+      case "RECHAZADO":
+        return "error"
+      default:
+        return "secondary"
     }
   }
 
@@ -561,7 +433,18 @@ export function SearchBar({
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                {results.length > 0 ? (
+                {searchError ? (
+                  <motion.div
+                    className="search-error"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="error-icon">⚠️</div>
+                    <div className="error-title">Error en la búsqueda</div>
+                    <div className="error-message">{searchError}</div>
+                  </motion.div>
+                ) : results.length > 0 ? (
                   <>
                     <div className="results-header">
                       <div className="results-count">
@@ -570,9 +453,12 @@ export function SearchBar({
                           animate={{ scale: 1 }}
                           transition={{ type: "spring", stiffness: 200 }}
                         >
-                          {results.length}
+                          {totalResults}
                         </motion.span>
-                        <span> trabajos encontrados</span>
+                        <span>
+                          {" "}
+                          trabajo{totalResults !== 1 ? "s" : ""} encontrado{totalResults !== 1 ? "s" : ""}
+                        </span>
                       </div>
                     </div>
                     <ul className="results-list">
@@ -591,16 +477,19 @@ export function SearchBar({
                           transition={{ duration: 0.3, delay: index * 0.08 }}
                         >
                           <div className="result-content">
-                            <div className="result-title">{result.title}</div>
+                            <div className="result-title">{result.titulo}</div>
                             <div className="result-author">
-                              Por: <strong>{result.autor?.nombre}</strong>
+                              Por: <strong>{result.autor}</strong>
                             </div>
+                            {result.resumen && <div className="result-description">{truncateText(result.resumen)}</div>}
                             <div className="result-meta">
-                              {result.carrera && <Badge variant="secondary">{result.carrera}</Badge>}
-                              {result.tipo && <Badge variant="default">{result.tipo}</Badge>}
-                              {result.autor?.correo && (
+                              {result.lineaDeInvestigacion && (
+                                <Badge variant="secondary">{result.lineaDeInvestigacion.nombre}</Badge>
+                              )}
+                              <Badge variant={getEstadoBadgeVariant(result.estado)}>{result.estado}</Badge>
+                              {result.periodoAcademico && (
                                 <Badge variant="secondary" size="sm">
-                                  {result.autor.correo}
+                                  {result.periodoAcademico.periodo}
                                 </Badge>
                               )}
                             </div>
@@ -657,9 +546,9 @@ export function SearchBar({
                 repeat: Number.POSITIVE_INFINITY,
               }}
             >
-              2
+              1
             </motion.span>
-            <span> segundos...</span>
+            <span> segundo...</span>
           </motion.div>
         )}
       </AnimatePresence>

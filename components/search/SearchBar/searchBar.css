@@ -18,7 +18,11 @@
 .floating-element {
   position: absolute;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(168, 85, 247, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.1),
+    rgba(168, 85, 247, 0.05)
+  );
   backdrop-filter: blur(10px);
 }
 
@@ -70,7 +74,11 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(168, 85, 247, 0.2));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.3),
+    rgba(168, 85, 247, 0.2)
+  );
   border-radius: 22px;
   z-index: -1;
   opacity: 0;
@@ -87,7 +95,11 @@
 }
 
 .clear-button {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(248, 113, 113, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1),
+    rgba(248, 113, 113, 0.05)
+  );
   border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: 50%;
   cursor: pointer;
@@ -101,7 +113,11 @@
 }
 
 .clear-button:hover {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(248, 113, 113, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.2),
+    rgba(248, 113, 113, 0.1)
+  );
   border-color: rgba(239, 68, 68, 0.4);
   transform: scale(1.05);
 }
@@ -178,7 +194,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(168, 85, 247, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.05),
+    rgba(168, 85, 247, 0.02)
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -195,7 +215,11 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(168, 85, 247, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.1),
+    rgba(168, 85, 247, 0.05)
+  );
   border-radius: 8px;
   transition: all 0.3s ease;
 }
@@ -294,7 +318,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(168, 85, 247, 0.02));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.05),
+    rgba(168, 85, 247, 0.02)
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -306,6 +334,7 @@
 .result-content {
   width: 100%;
   z-index: 1;
+  text-align: left;
 }
 
 .result-title {
@@ -328,12 +357,46 @@
   font-weight: 600;
 }
 
+.result-description {
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 8px 0 12px 0;
+  text-align: justify;
+}
+
 .result-meta {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   align-items: center;
   margin-top: 4px;
+}
+
+/* Error de búsqueda */
+.search-error {
+  text-align: center;
+  padding: 32px 20px;
+  color: #ef4444;
+}
+
+.search-error .error-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.search-error .error-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #dc2626;
+  margin-bottom: 6px;
+}
+
+.search-error .error-message {
+  font-size: 14px;
+  color: #7f1d1d;
+  line-height: 1.4;
 }
 
 .no-results {
@@ -403,12 +466,20 @@
 }
 
 .search-panel::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(168, 85, 247, 0.2));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.3),
+    rgba(168, 85, 247, 0.2)
+  );
   border-radius: 3px;
 }
 
 .search-panel::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(168, 85, 247, 0.3));
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.5),
+    rgba(168, 85, 247, 0.3)
+  );
 }
 
 /* Responsive */
@@ -441,6 +512,27 @@
     font-size: 13px;
   }
 
+  .result-description {
+    font-size: 12px;
+    margin: 6px 0 10px 0;
+  }
+
+  .search-error {
+    padding: 24px 16px;
+  }
+
+  .search-error .error-icon {
+    font-size: 28px;
+  }
+
+  .search-error .error-title {
+    font-size: 15px;
+  }
+
+  .search-error .error-message {
+    font-size: 13px;
+  }
+
   .no-results {
     padding: 32px 16px;
   }
@@ -467,5 +559,14 @@
 
   .results-header {
     padding: 0 16px 12px;
+  }
+
+  .result-description {
+    font-size: 11px;
+    margin: 4px 0 8px 0;
+  }
+
+  .search-error {
+    padding: 20px 12px;
   }
 }

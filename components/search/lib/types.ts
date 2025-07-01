@@ -1,14 +1,27 @@
 export interface SearchItem {
-  id: string
-  title: string
-  carrera?: string
-  tipo?: string
-  autor?: {
+  id: number
+  titulo: string
+  autor: string
+  estado: "VALIDADO" | "PENDIENTE" | "RECHAZADO"
+  doc: string
+  resumen: string
+  lineaDeInvestigacion: {
+    id: number
     nombre: string
-    cedula: string
-    correo: string
+    estado: boolean
   }
-  [key: string]: any
+  periodoAcademico: {
+    id: number
+    periodo: string
+  }
+}
+
+export interface BackendSearchResponse {
+  success: boolean
+  message: string
+  data: {
+    trabajos: SearchItem[]
+  }
 }
 
 export interface SearchIndex {
@@ -16,8 +29,8 @@ export interface SearchIndex {
   addItem: (item: SearchItem) => void
   addItems: (items: SearchItem[]) => void
   search: (query: string, options?: SearchOptions) => SearchItem[]
-  getItem: (id: string) => SearchItem | undefined
-  removeItem: (id: string) => void
+  getItem: (id: number) => SearchItem | undefined
+  removeItem: (id: number) => void
   clear: () => void
 }
 
