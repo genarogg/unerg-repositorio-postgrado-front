@@ -18,7 +18,7 @@ const SelectFilters: React.FC<SelectFiltersProps> = () => {
     }
 
     if (isValidRole(rolValue)) {
-      const finalRolValue = rolValue === "Todos" ? "" : (rolValue as UserRole | "")
+      const finalRolValue = rolValue === "" ? "" : (rolValue as UserRole | "")
       setRol(finalRolValue)
     }
   }

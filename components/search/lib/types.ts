@@ -14,6 +14,7 @@ export interface SearchItem {
     id: number
     periodo: string
   }
+  
 }
 
 export interface BackendSearchResponse {

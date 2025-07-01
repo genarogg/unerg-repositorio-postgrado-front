@@ -13,13 +13,21 @@ export function createSearchIndex(): SearchIndex {
   }
 
   // Calculate score based on term frequency
-  function calculateScore(item: SearchItem, tokens: string[], fields: string[], boost: Record<string, number>): number {
+  function calculateScore(
+    item: SearchItem,
+    tokens: string[],
+    fields: string[],
+    boost: Record<string, number>
+  ): number {
     let score = 0
 
     for (const field of fields) {
-      if (!item[field] || typeof item[field] !== "string") continue
 
-      const fieldValue = item[field].toLowerCase()
+      //@ts-ignore
+      const value = item[field]
+      if (typeof value !== "string") continue
+
+      const fieldValue = value.toLowerCase()
       const fieldBoost = boost[field] || 1
 
       for (const token of tokens) {
@@ -64,7 +72,7 @@ export function createSearchIndex(): SearchIndex {
         matrix[i][j] = Math.min(
           matrix[i - 1][j] + 1, // deletion
           matrix[i][j - 1] + 1, // insertion
-          matrix[i - 1][j - 1] + cost, // substitution
+          matrix[i - 1][j - 1] + cost // substitution
         )
       }
     }
@@ -73,7 +81,7 @@ export function createSearchIndex(): SearchIndex {
   }
 
   // Check if a string matches with fuzzy search
-  function fuzzyMatch(text: string, query: string, threshold: number): boolean {
+  function fuzzyMatch(text: string | undefined, query: string, threshold: number): boolean {
     if (!text) return false
     text = text.toLowerCase()
     query = query.toLowerCase()
@@ -89,7 +97,7 @@ export function createSearchIndex(): SearchIndex {
     // Calculate max allowed distance based on query length
     const maxDistance = Math.min(
       Math.floor(query.length * threshold),
-      3, // Cap at 3 for performance
+      3 // Cap at 3 for performance
     )
 
     // Check each word in the text
@@ -110,6 +118,7 @@ export function createSearchIndex(): SearchIndex {
 
     addItem(item: SearchItem) {
       if (!item.id) {
+        //@ts-ignore
         item.id = crypto.randomUUID()
       }
       items.push(item)
@@ -142,10 +151,12 @@ export function createSearchIndex(): SearchIndex {
           // Apply fuzzy matching if enabled and no exact matches found
           if (fuzzy && score === 0) {
             for (const field of fields) {
-              if (!item[field] || typeof item[field] !== "string") continue
+              //@ts-ignore
+              const value = item[field]
+              if (typeof value !== "string") continue
 
               for (const token of tokens) {
-                if (fuzzyMatch(item[field], token, fuzzyThreshold)) {
+                if (fuzzyMatch(value, token, fuzzyThreshold)) {
                   score += 0.3 * (boost[field] || 1)
                 }
               }
@@ -155,9 +166,11 @@ export function createSearchIndex(): SearchIndex {
           // Apply prefix matching if enabled
           if (prefix && score === 0) {
             for (const field of fields) {
-              if (!item[field] || typeof item[field] !== "string") continue
+              //@ts-ignore
+              const value = item[field]
+              if (typeof value !== "string") continue
 
-              const fieldValue = item[field].toLowerCase()
+              const fieldValue = value.toLowerCase()
               for (const token of tokens) {
                 for (const word of fieldValue.split(/\s+/)) {
                   if (word.startsWith(token)) {
@@ -178,12 +191,12 @@ export function createSearchIndex(): SearchIndex {
       return results
     },
 
-    getItem(id: string) {
-      return items.find((item) => item.id === id)
+    getItem(id: any) {
+      return items.find((item) => String(item.id) === id)
     },
 
-    removeItem(id: string) {
-      const index = items.findIndex((item) => item.id === id)
+    removeItem(id: any) {
+      const index = items.findIndex((item) => String(item.id) === id)
       if (index !== -1) {
         items.splice(index, 1)
       }
