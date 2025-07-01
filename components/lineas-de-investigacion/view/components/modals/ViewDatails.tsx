@@ -29,12 +29,12 @@ const ViewDetails: React.FC<ViewDetailsProps> = ({ item }) => {
         // In a real app, you would trigger the actual download here
     };
 
-    const formatPhone = (phone: string) => {
+    const formatPhone = (phone: any) => {
         // Format phone number for better display
         return phone;
     };
 
-    const formatEmail = (email: string) => {
+    const formatEmail = (email: any) => {
         return email;
     };
 
