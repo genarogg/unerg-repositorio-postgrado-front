@@ -2,11 +2,9 @@
 import React from 'react'
 import { A } from '../../nano'
 
-interface TitleProps {
 
-}
 
-const Title: React.FC<TitleProps> = () => {
+const Title = () => {
     const Separador = () => {
         return <span style={{ position: "relative", bottom: "1px" }}> | </span>
     }

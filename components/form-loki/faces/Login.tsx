@@ -6,7 +6,7 @@ import { $ } from "../../../functions";
 import { Input, BtnText, CheckBox } from "../../ux";
 import BtnSubmitBasic from './btn-submit';
 import HeadBtn from "./global/HeadBtn";
-import RedesLogin from './global/RedesLogin';
+
 
 interface LoginProps {
     cardState: (css: string) => void;
@@ -29,10 +29,7 @@ const Login: React.FC<LoginProps> = ({ cardState, register, reset, social = fals
 
     const [isChecked, setIsChecked] = useState(false);
 
-    const toogleChecked = () => {
-        setIsChecked(!isChecked);
-    }
-
+ 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log(inputRef.current);
@@ -82,7 +79,7 @@ const Login: React.FC<LoginProps> = ({ cardState, register, reset, social = fals
                         label="Mantener sesión iniciada"
                     />
 
-                    {social && <RedesLogin />}
+                 
 
                     <BtnSubmitBasic
                         formData={{
