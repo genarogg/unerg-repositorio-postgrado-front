@@ -101,7 +101,7 @@ const Header: React.FC<HeaderProps> = () => {
                         logoutfn={() => { btnRemove(); toggleAside(); }}
                     >
                         <Nav
-                            menuItems={menuItems}
+                            menuItems={menuItems} userRole={rol} 
                             onClick={() => { btnRemove(); toggleAside(); }}
                         />
                     </SideBar>
