@@ -39,8 +39,8 @@ const BtnSubmitBasic = ({
 
     try {
       // En Next.js, verificamos si estamos en el cliente antes de acceder a localStorage
-      rebootToken = typeof window !== 'undefined' 
-        ? localStorage.getItem("reboot-token") 
+      rebootToken = typeof window !== 'undefined'
+        ? localStorage.getItem("reboot-token")
         : null;
 
       data = {
@@ -81,7 +81,7 @@ const BtnSubmitBasic = ({
         requestBody = {
           query: constext,
           variables: data,
-          tokenCaptcha:  "",
+          tokenCaptcha: "",
           rebootToken: rebootToken || "",
         };
       }
@@ -142,9 +142,9 @@ const BtnSubmitBasic = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        notify({ 
-          type: "error", 
-          message: errorData.message || "Error al enviar la solicitud" 
+        notify({
+          type: "error",
+          message: errorData.message || "Error al enviar la solicitud"
         });
         return;
       }
@@ -152,42 +152,42 @@ const BtnSubmitBasic = ({
       const responseData = await response.json();
 
       console.log(responseData)
-      
+
       // Manejar respuesta según el contexto
       if (constext === "login" || constext === "/login") {
         if (responseData.type === "success") {
-      
+
           // Usar el contexto de autenticación para el login
 
-       
-          login({ token: responseData.data.token });
-          
-       
-          notify({ 
-            type: "success", 
-            message: responseData.message || "Login exitoso" 
+
+          login({ token: responseData.data.token, rol: responseData.data.usuario.role });
+
+
+          notify({
+            type: "success",
+            message: responseData.message || "Login exitoso"
           });
-          
+
           // El contexto de autenticación ya maneja la navegación
         } else {
-          notify({ 
-            type: "error", 
-            message: responseData.message || "Error en el login" 
+          notify({
+            type: "error",
+            message: responseData.message || "Error en el login"
           });
         }
       } else {
 
-  
+
         // Para otros contextos (GraphQL o REST)
         const { data: datos, type, message, success } = responseData;
 
-        notify({ 
-          type: success ? "success" : (type || "error"), 
-          message: message || "Operación completada" 
+        notify({
+          type: success ? "success" : (type || "error"),
+          message: message || "Operación completada"
         });
 
         if (success || type === "success") {
-       
+
           router.push("/dashboard");
         }
       }

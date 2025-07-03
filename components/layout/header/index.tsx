@@ -6,7 +6,7 @@ import BtnFreya from "../../ux/btns/btn-freya";
 import Title from "./Title";
 import SideBar from "./sidebar";
 
-import Nav from "../nav/Nav";
+import Nav from "../nav";
 import { useAuth } from "../../../context/AuthContext";
 
 interface HeaderProps {
@@ -16,7 +16,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = () => {
 
-    const { state: { isAuthenticated } } = useAuth();
+    const { state: { isAuthenticated, rol } } = useAuth();
 
     const btnRemove = () => {
         console.log("btnRemove");
@@ -29,42 +29,62 @@ const Header: React.FC<HeaderProps> = () => {
         container?.classList.toggle("sidebar-header");
     }
 
-    const menuItems = [
-        { href: "/", label: "Inicio" },
-        { href: "/", label: "Salir", onClick: () => borrarToken() }
-    ];
 
     const borrarToken = () => {
         localStorage.removeItem("auth_token");
+        window.location.href = "/";
     }
 
-    console.log("isAuthenticated", isAuthenticated);
+    const menuItems = [
+        // Inicio - siempre visible
+        {
+            href: "/",
+            label: "Inicio",
 
-    if (isAuthenticated) {
-        menuItems.push(
+        },
+        {
+            href: "/documentos",
+            label: "documentos"
+        },
+        {
+            href: "/login",
+            label: "login"
+            , visible: !isAuthenticated
+        },
+        {
+            href: "/dashboard/trabajos",
+            label: "trabajos",
+            role: ["SUPER", "EDITOR"]
+        },
+        {
+            href: "/dashboard/lineas-de-investigacion",
+            label: "lineas",
+            role: ["SUPER", "EDITOR"]
+        },
+        {
+            href: "/dashboard/usuarios",
+            label: "usuarios",
+            role: ["SUPER"]
+        },
+        {
+            href: "/reportes",
+            label: "Reportes",
+            role: ["SUPER"]
+        },
+        {
+            href: "/",
+            label: "Salir",
+            onClick: borrarToken,
+            visible: isAuthenticated
+        },
 
-            { href: "/dashboard/trabajos", label: "trabajos" },
-            { href: "/dashboard/lineas-de-investigacion", label: "lineas" },
-
-            { href: "/dashboard/usuarios", label: "usuarios" },
-            { href: "/reportes", label: "reportes" },
-
-        );
-    }
-    else {
-        menuItems.push(
-
-            { href: "/documentos", label: "documentos" },
-
-            { href: "/login", label: "login" },
-        );
-    }
+    ];
 
     return (
         <header className="header-container">
             <div className="desktop-header">
                 <Title />
-                <Nav menuItems={menuItems} />
+                <Nav menuItems={menuItems} userRole={rol} />
             </div>
 
             <div className="movile-header">
@@ -93,3 +113,6 @@ const Header: React.FC<HeaderProps> = () => {
 };
 
 export default Header;
+
+
+
