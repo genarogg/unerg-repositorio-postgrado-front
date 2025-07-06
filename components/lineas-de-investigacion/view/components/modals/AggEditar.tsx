@@ -198,7 +198,7 @@ const AggEditarForm = memo(
 
           console.log("Datos de actualización:", updateData)
 
-          const result = await makeApiRequest("https://repositorio.unerg.tech/lineas-de-investigacion/update", updateData)
+          const result = await makeApiRequest("http://localhost:4000/lineas-de-investigacion/update", updateData)
 
           if (result.type === "success") {
             // Actualizar en el estado local
@@ -220,7 +220,7 @@ const AggEditarForm = memo(
             nombre: formData.nombre.trim(),
           }
 
-          const result = await makeApiRequest("https://repositorio.unerg.tech/lineas-de-investigacion/create", createData)
+          const result = await makeApiRequest("http://localhost:4000/lineas-de-investigacion/create", createData)
 
           if (result.type === "success") {
             // Agregar al estado local con los datos devueltos por el backend

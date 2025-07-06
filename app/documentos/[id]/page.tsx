@@ -52,7 +52,7 @@ export default function DocumentoIndividualPage() {
         setLoading(true)
         setError(null)
 
-        const response = await fetch(`https://repositorio.unerg.tech/trabajos/get-by-id/${documentoId}`)
+        const response = await fetch(`http://localhost:4000/trabajos/get-by-id/${documentoId}`)
 
         if (!response.ok) {
           throw new Error(`Error ${response.status}: ${response.statusText}`)
@@ -81,7 +81,7 @@ export default function DocumentoIndividualPage() {
 
     // Construye la URL del archivo basada en el nombre del documento
     // Ajusta esta URL según tu configuración del servidor
-    const fileUrl = `https://repositorio.unerg.tech/files/${documento.doc}`
+    const fileUrl = `http://localhost:4000/files/${documento.doc}`
 
     const link = document.createElement("a")
     link.href = fileUrl

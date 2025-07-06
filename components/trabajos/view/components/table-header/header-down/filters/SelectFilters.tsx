@@ -35,7 +35,7 @@ const SelectFilters: React.FC<SelectFiltersProps> = () => {
     const fetchLineasDeInvestigacion = async () => {
       setLoading(true)
       try {
-        const response = await fetch('https://repositorio.unerg.tech/lineas-de-investigacion/get-all')
+        const response = await fetch('http://localhost:4000/lineas-de-investigacion/get-all')
         if (!response.ok) {
           throw new Error('Error al obtener líneas de investigación')
         }

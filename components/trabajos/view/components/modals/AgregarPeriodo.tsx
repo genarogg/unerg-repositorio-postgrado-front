@@ -46,7 +46,7 @@ const AgregarPeriodo: React.FC = () => {
 
       console.log("📥 Cargando períodos académicos desde el servidor...")
 
-      const response = await fetch("https://repositorio.unerg.tech/periodo/get-all", {
+      const response = await fetch("http://localhost:4000/periodo/get-all", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const AgregarPeriodo: React.FC = () => {
     try {
       console.log(`📤 Actualizando período ID ${id} a: ${nuevoPeriodo}`)
 
-      const response = await fetch("https://repositorio.unerg.tech/periodo/update", {
+      const response = await fetch("http://localhost:4000/periodo/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +143,7 @@ const AgregarPeriodo: React.FC = () => {
     try {
       console.log(`📤 Creando nuevo período: ${nuevoPeriodo}`)
 
-      const response = await fetch("https://repositorio.unerg.tech/periodo/create", {
+      const response = await fetch("http://localhost:4000/periodo/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

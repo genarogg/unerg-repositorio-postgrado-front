@@ -50,7 +50,7 @@ const InteractiveSearchDashboard = () => {
       setLoading(true)
       setError(null)
 
-      const response = await fetch("https://repositorio.unerg.tech/estadisticas/get-all", {
+      const response = await fetch("http://localhost:4000/estadisticas/get-all", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

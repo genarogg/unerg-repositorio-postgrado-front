@@ -142,7 +142,7 @@ const ConfiguracionReporte: React.FC = () => {
       setLoadingLineas(true)
       setErrorLineas(null)
 
-      const response = await fetch("https://repositorio.unerg.tech/lineas-de-investigacion/get-all")
+      const response = await fetch("http://localhost:4000/lineas-de-investigacion/get-all")
 
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`)
@@ -171,7 +171,7 @@ const ConfiguracionReporte: React.FC = () => {
       setLoadingPeriodos(true)
       setErrorPeriodos(null)
 
-      const response = await fetch("https://repositorio.unerg.tech/periodo/get-all")
+      const response = await fetch("http://localhost:4000/periodo/get-all")
 
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`)
@@ -198,7 +198,7 @@ const ConfiguracionReporte: React.FC = () => {
       setLoadingReporte(true)
       setErrorReporte(null)
 
-      const response = await fetch("https://repositorio.unerg.tech/reporte/generar", {
+      const response = await fetch("http://localhost:4000/reporte/generar", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

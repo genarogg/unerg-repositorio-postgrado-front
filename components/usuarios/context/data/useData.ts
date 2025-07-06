@@ -6,7 +6,7 @@ import dataFake from "./data-fake"
 
 const useData = () => {
   const { setData } = useGlobal()
-  const API = "https://repositorio.unerg.tech/auth/usuarios" // URL actualizada
+  const API = "http://localhost:4000/auth/usuarios" // URL actualizada
 
   const initialData = useCallback(
     async (page: number = 1, itemsPerPage: number = 100) => {
