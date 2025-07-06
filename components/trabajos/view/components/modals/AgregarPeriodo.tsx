@@ -148,6 +148,9 @@ const AgregarPeriodo: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          periodo: nuevoPeriodo.trim(),
+        }),
       })
 
       const data = await response.json()

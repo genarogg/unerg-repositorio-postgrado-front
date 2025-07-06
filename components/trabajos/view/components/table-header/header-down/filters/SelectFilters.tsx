@@ -133,7 +133,7 @@ const SelectFilters: React.FC<SelectFiltersProps> = () => {
   return (
     <div className="select-filters-container" style={{ display: "flex", gap: "12px", alignItems: "center" }}>
       {/* <SelectPeriodo /> */}
-      <SelectLinea />
+      {/* <SelectLinea /> */}
     </div>
   )
 }
