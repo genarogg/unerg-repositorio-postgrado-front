@@ -15,7 +15,7 @@ const VisualizarPDF = memo(({ item }: { item: any }) => {
   const handleViewPDF = useCallback(() => {
     if (item.pdfUrl) {
       // Aquí podrías abrir el PDF en una nueva ventana o modal
-      window.open(`/pdfs/${item.pdfUrl}`, "_blank")
+      window.open(`http://localhost:4000/uploads/${item.pdfUrl}`, "_blank")
     } else {
       console.log("No hay PDF disponible para este trabajo")
     }

@@ -81,7 +81,7 @@ export default function DocumentoIndividualPage() {
 
     // Construye la URL del archivo basada en el nombre del documento
     // Ajusta esta URL según tu configuración del servidor
-    const fileUrl = `http://localhost:4000/files/${documento.doc}`
+    const fileUrl = `http://localhost:4000/uploads/${documento.doc}`
 
     const link = document.createElement("a")
     link.href = fileUrl
